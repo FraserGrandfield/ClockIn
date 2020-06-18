@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class DataBase {
 
     private Connection connection;
-    private final String CONNECTION_URL = "jdbc:mysql://localhost:3306/clockin?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private final String CONNECTION_URL = "jdbc:mysql://localhost:3306/companies?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final String CONNECTION_USERNAME = "root";
     //Move off source code
     private final String CONNECTION_PASSWORD = "Deadisland12";
