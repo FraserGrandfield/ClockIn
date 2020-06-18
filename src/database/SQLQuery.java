@@ -12,7 +12,7 @@ import java.sql.Statement;
  * @since 18/06/20
  */
 public class SQLQuery {
-
+    //TODO split into classes for delete, insert and select and inherit from a abtract class.
     private static DataBase dataBase = DataBase.getDataBaseInstance();
 
     /**
