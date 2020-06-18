@@ -16,18 +16,20 @@ import java.util.Scanner;
  */
 public class DataBase {
 
+    private static Connection connection;
+
     private final String CONNECTION_URL = "jdbc:mysql://localhost:3306/companies?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final String CONNECTION_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private final File file = new File("C:\\Users\\fraser\\Documents\\A Documents\\ClockInSens\\ClockInSens.txt");
+    private final File FILE = new File("C:\\Users\\fraser\\Documents\\A Documents\\ClockInSens\\ClockInSens.txt");
 
     private DataBase(){
         try {
-            Scanner reader = new Scanner(file);
+            Scanner reader = new Scanner(FILE);
             String connectionUsername = reader.nextLine();
             String connectionPassword = reader.nextLine();
 
             Class.forName(CONNECTION_DRIVER);
-            Connection connection = DriverManager.getConnection(CONNECTION_URL, connectionUsername, connectionPassword);
+            connection = DriverManager.getConnection(CONNECTION_URL, connectionUsername, connectionPassword);
         } catch (SQLException | ClassNotFoundException | FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -40,7 +42,15 @@ public class DataBase {
      *
      * @return database instance.
      */
-    static DataBase getDataBaseInstance() {
+    public static DataBase getDataBaseInstance() {
         return database;
+    }
+
+    /**
+     *
+     * @return connection.
+     */
+    public static Connection getConnection() {
+        return connection;
     }
 }
