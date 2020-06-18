@@ -1,8 +1,12 @@
 package database;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Scanner;
+
 /**
  * Stores database instance.
  *
@@ -12,32 +16,31 @@ import java.sql.SQLException;
  */
 public class DataBase {
 
-    private Connection connection;
     private final String CONNECTION_URL = "jdbc:mysql://localhost:3306/companies?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private final String CONNECTION_USERNAME = "root";
-    //Move off source code
-    private final String CONNECTION_PASSWORD = "Deadisland12";
     private final String CONNECTION_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private final File file = new File("C:\\Users\\fraser\\Documents\\A Documents\\ClockInSens\\ClockInSens.txt");
 
-    private DataBase() throws ClassNotFoundException, SQLException {
-        Class.forName(CONNECTION_DRIVER);
-        connection = DriverManager.getConnection(CONNECTION_URL, CONNECTION_USERNAME, CONNECTION_PASSWORD);
-    }
-
-    private static DataBase database;
-    static {
+    private DataBase(){
         try {
-            database = new DataBase();
-        } catch (SQLException | ClassNotFoundException e) {
+            Scanner reader = new Scanner(file);
+            String connectionUsername = reader.nextLine();
+            String connectionPassword = reader.nextLine();
+
+            Class.forName(CONNECTION_DRIVER);
+            Connection connection = DriverManager.getConnection(CONNECTION_URL, connectionUsername, connectionPassword);
+        } catch (SQLException | ClassNotFoundException | FileNotFoundException e) {
             e.printStackTrace();
         }
+
     }
+
+    private static DataBase database = new DataBase();
 
     /**
      *
      * @return database instance.
      */
-    public static DataBase getDataBaseInstance() {
+    static DataBase getDataBaseInstance() {
         return database;
     }
 }
