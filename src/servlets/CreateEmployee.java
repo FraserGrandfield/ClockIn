@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Base64;
-import java.util.Random;
 
 /**
  * Servlet to create a employee and add them to the database.
@@ -24,11 +23,24 @@ public class CreateEmployee extends HttpServlet {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
         String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
-        String email = decodedAuth.substring(0, decodedAuth.indexOf(':'));
-        String password = decodedAuth.substring(decodedAuth.indexOf(':') + 1);
+        String token = decodedAuth.substring(0, decodedAuth.indexOf('|'));
+        String password = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
         String name = request.getParameter("name");
         String companyName = request.getParameter("companyname");
+        String email = request.getParameter("email");
+
+        try {
+            if (!SQLQuery.doesCompanyHaveValidToken(token, companyName)) {
+                //401: Client doesn't have a valid token
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
+        }
 
         try {
             if (SQLQuery.isEmployeeInCompany(email, companyName)) {
@@ -38,6 +50,8 @@ public class CreateEmployee extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
         }
 
         try {
@@ -46,7 +60,8 @@ public class CreateEmployee extends HttpServlet {
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
         }
     }
 
@@ -54,6 +69,7 @@ public class CreateEmployee extends HttpServlet {
      * Generates ID for employee, gets current max Id + 1.
      * @return Id
      */
+    //TODO throw the exception instead of catching it here
     private int generateEmployeeId() {
         boolean gotId = false;
         int maxId = -1;

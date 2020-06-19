@@ -11,6 +11,7 @@ import java.util.Base64;
 
 /**
  * Servlet to add a company to the database.
+ * Needs check that the company name doesn't include the character '|'.
  * @author Fraser Grandfield
  * @version 1.0
  * @since 18/06/20
@@ -22,8 +23,8 @@ public class CreateCompany extends HttpServlet {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
         String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
-        String compName = decodedAuth.substring(0, decodedAuth.indexOf(':'));
-        String compPassword = decodedAuth.substring(decodedAuth.indexOf(':') + 1);
+        String compName = decodedAuth.substring(0, decodedAuth.indexOf('|'));
+        String compPassword = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
         try {
             if (SQLQuery.doesCompanyNameExist(compName)) {
@@ -33,6 +34,8 @@ public class CreateCompany extends HttpServlet {
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
         }
 
         try {
@@ -41,7 +44,8 @@ public class CreateCompany extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             //403: error adding company
-            response.sendError(403);
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
         }
     }
 }

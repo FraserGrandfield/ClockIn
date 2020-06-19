@@ -34,4 +34,24 @@
         <url-pattern>/createemployee/*</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>CreateCompanyToken</servlet-name>
+        <servlet-class>servlets.CreateCompanyToken</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CreateCompanyToken</servlet-name>
+        <url-pattern>/createcompanytoken/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CompanyGetPassword</servlet-name>
+        <servlet-class>servlets.CompanyGetPassword</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CompanyGetPassword</servlet-name>
+        <url-pattern>/companygetpassword/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -3,6 +3,8 @@ package database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Stores all SQL queries.
@@ -70,7 +72,7 @@ public class SQLQuery {
      */
     public static void deleteOldToken(int employeeId) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM companies.token WHERE employeeId` = '%s';", employeeId));
+        statement.execute(String.format("DELETE FROM companies.token WHERE employeeId = '%s';", employeeId));
     }
 
     /**
@@ -87,7 +89,7 @@ public class SQLQuery {
 
     /**
      * Checks if there are any fields in the employee table.
-     * @return true if there are fields in the employee table.
+     * @return boolean true if there are fields in the employee table.
      * @throws SQLException
      */
     public static boolean doesEmployeeInTableExist() throws SQLException {
@@ -106,7 +108,7 @@ public class SQLQuery {
 
     /**
      * Get the max employee Id in the employee table.
-     * @return the max employee Id.
+     * @return int the max employee Id.
      * @throws SQLException
      */
     public static int getMaxEmployeeId() throws SQLException {
@@ -139,7 +141,7 @@ public class SQLQuery {
      * Checks if an employee is associated with a company by their email.
      * @param email employee email
      * @param companyName company name.
-     * @return true if the employee email is associated with the company.
+     * @return boolean true if the employee email is associated with the company.
      * @throws SQLException
      */
     public static boolean isEmployeeInCompany(String email, String companyName) throws SQLException {
@@ -154,5 +156,99 @@ public class SQLQuery {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Checks if the company logged in has a valid token
+     * @param token token.
+     * @param companyName company name.
+     * @return boolean true if company has a valid token.
+     * @throws SQLException
+     */
+    public static boolean doesCompanyHaveValidToken(String token, String companyName) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.tokencompany WHERE companyname = '%S';", companyName));
+
+        String tempToken = "";
+        String dataTime = "";
+        while (resultSet.next()) {
+            tempToken = resultSet.getString(2);
+            dataTime = resultSet.getString(3);
+        }
+
+        if (!token.equals(tempToken)) {
+            //Delete token
+            statement.execute(String.format("DELETE FROM companies.tokencompany WHERE companyname = '%s';", companyName));
+            return false;
+        }
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime tokenTime = LocalDateTime.parse(dataTime, dateTimeFormatter);
+        if (currentTime.isAfter(tokenTime)) {
+            statement.execute(String.format("DELETE FROM companies.tokencompany WHERE companyname = '%s';", companyName));
+            System.out.println(currentTime + "  " + tokenTime);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Adds a company token
+     * @param companyName company name.
+     * @param token token.
+     * @param timeStamp timestamp.
+     * @throws SQLException
+     */
+    public static void addCompanyToken(String companyName, String token, String timeStamp) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        statement.execute(String.format("INSERT INTO companies.tokencompany VALUES ('%s','%s', '%s');", companyName, token, timeStamp));
+    }
+
+    /**
+     * Checks if the company has a token in the database.
+     * @param companyName company name.
+     * @return boolean true if the company has a token.
+     * @throws SQLException
+     */
+    public static boolean doesCompanyHaveToken(String companyName) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companyname FROM companies.tokencompany WHERE companyname = '%S';", companyName));
+
+        String tempName = "";
+        while (resultSet.next()) {
+            tempName = resultSet.getString(1);
+        }
+        if (tempName.equals(companyName)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Deletes a companies token from the database.
+     * @param companyName company name.
+     * @throws SQLException
+     */
+    public static void deleteOldCompanyToken(String companyName) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        statement.execute(String.format("DELETE FROM companies.tokencompany WHERE companyname = '%s';", companyName));
+    }
+
+    /**
+     * Gets the encrypted password of the company.
+     * @param companyName company name.
+     * @return String encrypted password.
+     * @throws SQLException
+     */
+    public static String getCompanyPassword(String companyName) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companiePassword FROM companies.companies WHERE companieName = '%S';", companyName));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return temp;
     }
 }

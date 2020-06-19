@@ -14,29 +14,30 @@ import java.util.Base64;
 import java.util.UUID;
 
 /**
- * Servlet to create a token.
+ * Create a token for a company
  * @author Fraser Grandfield
  * @version 1.0
  * @since 19/06/20
  */
-public class CreateToken extends HttpServlet {
+public class CreateCompanyToken  extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        int employeeId = new Integer(String.valueOf(Base64.getDecoder().decode(encodedAuth)));
+        String companyName = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
-            if (SQLQuery.doesEmployeeHaveToken(employeeId)) {
-                SQLQuery.deleteOldToken(employeeId);
+            if (SQLQuery.doesCompanyHaveToken(companyName)) {
+                SQLQuery.deleteOldCompanyToken(companyName);
             }
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
+            System.out.println(dateTime);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQuery.addToken(employeeId, token, dataTimeStr);
+            SQLQuery.addCompanyToken(companyName, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();
@@ -52,4 +53,5 @@ public class CreateToken extends HttpServlet {
     private String generateToken() {
         return UUID.randomUUID().toString();
     }
+
 }
