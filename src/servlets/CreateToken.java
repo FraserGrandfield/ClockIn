@@ -1,6 +1,5 @@
 package servlets;
 
-import core.GenerateToken;
 import database.SQLQuery;
 
 import javax.servlet.http.HttpServlet;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * Servlet to create a token.
@@ -30,7 +30,7 @@ public class CreateToken extends HttpServlet {
             if (SQLQuery.doesEmployeeHaveToken(employeeId)) {
                 SQLQuery.deleteOldToken(employeeId);
             }
-            String token = GenerateToken.generateToken();
+            String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
@@ -41,4 +41,9 @@ public class CreateToken extends HttpServlet {
         }
         response.sendError(HttpServletResponse.SC_OK);
     }
+
+    private String generateToken() {
+        return UUID.randomUUID().toString();
+    }
+
 }

@@ -24,4 +24,14 @@
         <url-pattern>/createtoken/*</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>CreateEmployee</servlet-name>
+        <servlet-class>servlets.CreateEmployee</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CreateEmployee</servlet-name>
+        <url-pattern>/createemployee/*</url-pattern>
+    </servlet-mapping>
+    
 </web-app>
