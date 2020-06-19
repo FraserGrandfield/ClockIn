@@ -40,7 +40,7 @@ public class DataBase {
 
     /**
      *
-     * @return database instance.
+     * @return Database database instance.
      */
     public static DataBase getDataBaseInstance() {
         return database;
@@ -48,7 +48,7 @@ public class DataBase {
 
     /**
      *
-     * @return connection.
+     * @return Connection connection.
      */
     public static Connection getConnection() {
         return connection;

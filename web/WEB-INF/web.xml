@@ -13,4 +13,15 @@
         <servlet-name>CreateCompany</servlet-name>
         <url-pattern>/createcompany/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>CreateToken</servlet-name>
+        <servlet-class>servlets.CreateToken</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CreateToken</servlet-name>
+        <url-pattern>/createtoken/*</url-pattern>
+    </servlet-mapping>
+    
 </web-app>
