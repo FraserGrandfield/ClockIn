@@ -32,13 +32,7 @@ public class CreateCompany extends HttpServlet {
                 response.sendError(402);
                 return;
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            return;
-        }
 
-        try {
             SQLQuery.addCompany(compName, compPassword);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {

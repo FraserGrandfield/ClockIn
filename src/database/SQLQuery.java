@@ -187,7 +187,6 @@ public class SQLQuery {
         LocalDateTime tokenTime = LocalDateTime.parse(dataTime, dateTimeFormatter);
         if (currentTime.isAfter(tokenTime)) {
             statement.execute(String.format("DELETE FROM companies.tokencompany WHERE companyname = '%s';", companyName));
-            System.out.println(currentTime + "  " + tokenTime);
             return false;
         }
         return true;

@@ -31,30 +31,23 @@ public class CreateEmployee extends HttpServlet {
         String email = request.getParameter("email");
 
         try {
+            if(!SQLQuery.doesCompanyNameExist(companyName)) {
+                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                return;
+            }
+
             if (!SQLQuery.doesCompanyHaveValidToken(token, companyName)) {
                 //401: Client doesn't have a valid token
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            return;
-        }
 
-        try {
             if (SQLQuery.isEmployeeInCompany(email, companyName)) {
                 //402: Employee email is already with the company
                 response.sendError(402);
                 return;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            return;
-        }
 
-        try {
             int employeeId = generateEmployeeId();
             SQLQuery.addEmployee(employeeId, name, email, password, companyName);
             response.sendError(HttpServletResponse.SC_OK);

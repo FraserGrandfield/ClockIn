@@ -34,7 +34,6 @@ public class CreateCompanyToken  extends HttpServlet {
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
-            System.out.println(dateTime);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
             SQLQuery.addCompanyToken(companyName, token, dataTimeStr);
