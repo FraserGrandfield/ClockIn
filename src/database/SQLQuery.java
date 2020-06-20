@@ -66,23 +66,23 @@ public class SQLQuery {
     }
 
     /**
-     * Delete a token
+     * Delete an employee token
      * @param employeeId employees Id.
      * @throws SQLException
      */
-    public static void deleteOldToken(int employeeId) throws SQLException {
+    public static void deleteOldEmployeeToken(int employeeId) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
         statement.execute(String.format("DELETE FROM companies.token WHERE employeeId = '%s';", employeeId));
     }
 
     /**
-     * Add a token field to the database.
+     * Add an employee token field to the database.
      * @param employeeId employees Id.
      * @param token the token.
      * @param timeStamp current timestamp.
      * @throws SQLException
      */
-    public static void addToken(int employeeId, String token, String timeStamp) throws SQLException {
+    public static void addEmployeeToken(int employeeId, String token, String timeStamp) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
         statement.execute(String.format("INSERT INTO companies.token VALUES ('%s','%s', '%s');", employeeId, token, timeStamp));
     }
@@ -261,6 +261,17 @@ public class SQLQuery {
     public static String getEmployeePassword(String companyName, String email) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT password FROM companies.employees WHERE companieName = '%s' AND email = '%s';", companyName, email));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return temp;
+    }
+
+    public static String getEmployeeId(String companyName, String email) throws  SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT employeeID FROM companies.employees WHERE companieName = '%s' AND email = '%s';", companyName, email));
 
         String temp = "";
         while (resultSet.next()) {

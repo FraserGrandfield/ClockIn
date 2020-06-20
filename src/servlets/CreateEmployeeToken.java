@@ -19,24 +19,26 @@ import java.util.UUID;
  * @version 1.0
  * @since 19/06/20
  */
-public class CreateToken extends HttpServlet {
+public class CreateEmployeeToken extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        int employeeId = new Integer(String.valueOf(Base64.getDecoder().decode(encodedAuth)));
+        String employeeIdString = new String(Base64.getDecoder().decode(encodedAuth));
+        int employeeId = Integer.parseInt(employeeIdString);
 
         try {
             if (SQLQuery.doesEmployeeHaveToken(employeeId)) {
-                SQLQuery.deleteOldToken(employeeId);
+                SQLQuery.deleteOldEmployeeToken(employeeId);
             }
+
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQuery.addToken(employeeId, token, dataTimeStr);
+            SQLQuery.addEmployeeToken(employeeId, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();
