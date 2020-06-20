@@ -53,5 +53,15 @@
         <servlet-name>CompanyGetPassword</servlet-name>
         <url-pattern>/companygetpassword/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>EmployeeGetPassword</servlet-name>
+        <servlet-class>servlets.EmployeeGetPassword</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>EmployeeGetPassword</servlet-name>
+        <url-pattern>/employeegetpassword/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

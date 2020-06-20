@@ -242,7 +242,25 @@ public class SQLQuery {
      */
     public static String getCompanyPassword(String companyName) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT companiePassword FROM companies.companies WHERE companieName = '%S';", companyName));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companiePassword FROM companies.companies WHERE companieName = '%s';", companyName));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return temp;
+    }
+
+    /**
+     * Gets the encrypted password of the employee.
+     * @param companyName company name.
+     * @param email employee email.
+     * @return String encrypted password of employee.
+     * @throws SQLException
+     */
+    public static String getEmployeePassword(String companyName, String email) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT password FROM companies.employees WHERE companieName = '%s' AND email = '%s';", companyName, email));
 
         String temp = "";
         while (resultSet.next()) {
