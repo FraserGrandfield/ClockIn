@@ -11,6 +11,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Base64;
 
+/**
+ * Gets the employees Id.
+ * @author Fraser grandfield
+ * @version 1.0
+ * @since 21/06/20
+ */
 public class GetEmployeeId extends HttpServlet {
 
     @Override

@@ -25,7 +25,7 @@ public class SQLQuery {
      */
     public static boolean doesCompanyNameExist(String compName) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT companieName FROM companies.companies WHERE companieName = '%S';", compName));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companieName FROM companies.companies WHERE companieName = '%s';", compName));
         String names = "";
 
         while (resultSet.next()) {
@@ -53,16 +53,14 @@ public class SQLQuery {
      */
     public static boolean doesEmployeeHaveToken(int employeeId) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT employeeId FROM companies.token WHERE employeeId = '%S';", employeeId));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT employeeId FROM companies.token WHERE employeeId = '%s';", employeeId));
 
         int name = 0;
         while (resultSet.next()) {
             name = resultSet.getInt(1);
         }
-        if (name == employeeId) {
-            return true;
-        }
-        return false;
+
+        return (name == employeeId);
     }
 
     /**
@@ -100,10 +98,8 @@ public class SQLQuery {
         while (resultSet.next()) {
             id = resultSet.getInt(1);
         }
-        if (id == 0) {
-            return true;
-        }
-        return false;
+
+        return (id == 0);
     }
 
     /**
@@ -146,16 +142,14 @@ public class SQLQuery {
      */
     public static boolean isEmployeeInCompany(String email, String companyName) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.employees WHERE email = '%S' AND companieName = '%s';", email, companyName));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.employees WHERE email = '%s' AND companieName = '%s';", email, companyName));
 
         String temp = "";
         while (resultSet.next()) {
             temp = resultSet.getString(1);
         }
-        if (temp.equals(email)) {
-            return true;
-        }
-        return false;
+
+        return temp.equals(email);
     }
 
     /**
@@ -167,7 +161,7 @@ public class SQLQuery {
      */
     public static boolean doesCompanyHaveValidToken(String token, String companyName) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.tokencompany WHERE companyname = '%S';", companyName));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.tokencompany WHERE companyname = '%s';", companyName));
 
         String tempToken = "";
         String dataTime = "";
@@ -212,16 +206,14 @@ public class SQLQuery {
      */
     public static boolean doesCompanyHaveToken(String companyName) throws SQLException {
         Statement statement = dataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT companyname FROM companies.tokencompany WHERE companyname = '%S';", companyName));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companyname FROM companies.tokencompany WHERE companyname = '%s';", companyName));
 
         String tempName = "";
         while (resultSet.next()) {
             tempName = resultSet.getString(1);
         }
-        if (tempName.equals(companyName)) {
-            return true;
-        }
-        return false;
+
+        return tempName.equals(companyName);
     }
 
     /**
@@ -278,5 +270,73 @@ public class SQLQuery {
             temp = resultSet.getString(1);
         }
         return temp;
+    }
+
+    public static boolean doesCompanyHaveCreateEmployeeToken(String companyName) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companyName FROM companies.createemployeetoken WHERE companyName = '%s';", companyName));
+
+        String tempName = "";
+        while (resultSet.next()) {
+            tempName = resultSet.getString(1);
+        }
+
+        return tempName.equals(companyName);
+    }
+
+    public static void deleteOldCompanyCreateEmployeeToken(String companyName) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        statement.execute(String.format("DELETE FROM companies.createemployeetoken WHERE companyName = '%s';", companyName));
+    }
+
+    public static void addCompanyCreateEmployeeToken(String companyName, String token, String timeStamp) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        statement.execute(String.format("INSERT INTO companies.createemployeetoken VALUES ('%s','%s', '%s');", companyName, token, timeStamp));
+    }
+
+    public static boolean doesEmployeeHaveCreateAccountValidToken(String token) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.createemployeetoken WHERE token = '%s';", token));
+
+        String tempToken = "";
+        String dataTime = "";
+        while (resultSet.next()) {
+            tempToken = resultSet.getString(2);
+            dataTime = resultSet.getString(3);
+        }
+        if (!token.equals(tempToken)) {
+            return false;
+        }
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime tokenTime = LocalDateTime.parse(dataTime, dateTimeFormatter);
+        if (currentTime.isAfter(tokenTime)) {
+            return false;
+        }
+        return true;
+    }
+
+    public static String getCompanyNameFromCreateEmployeeToken(String token) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companyName FROM companies.createemployeetoken WHERE token = '%s';", token));
+
+        String compName = "";
+        while (resultSet.next()) {
+            compName = resultSet.getString(1);
+        }
+        return compName;
+    }
+
+    public static boolean isCreateEmployeeTokenUnique(String token) throws SQLException {
+        Statement statement = dataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT token FROM companies.createemployeetoken WHERE token = '%s';", token));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+
+        return !(temp.equals(token));
     }
 }

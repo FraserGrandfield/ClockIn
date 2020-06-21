@@ -27,20 +27,17 @@ public class CreateEmployee extends HttpServlet {
         String password = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
         String name = request.getParameter("name");
-        String companyName = request.getParameter("companyname");
         String email = request.getParameter("email");
 
         try {
-            if(!SQLQuery.doesCompanyNameExist(companyName)) {
-                response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-                return;
-            }
 
-            if (!SQLQuery.doesCompanyHaveValidToken(token, companyName)) {
+            if (!SQLQuery.doesEmployeeHaveCreateAccountValidToken(token)) {
                 //401: Client doesn't have a valid token
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
+
+            String companyName = SQLQuery.getCompanyNameFromCreateEmployeeToken(token);
 
             if (SQLQuery.isEmployeeInCompany(email, companyName)) {
                 //402: Employee email is already with the company

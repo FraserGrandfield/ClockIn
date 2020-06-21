@@ -74,4 +74,14 @@
         <url-pattern>/getemployeeid/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>CreateEmployeeCreateToken</servlet-name>
+        <servlet-class>servlets.CreateEmployeeCreateToken</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CreateEmployeeCreateToken</servlet-name>
+        <url-pattern>/createemployeecreatetoken/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>
