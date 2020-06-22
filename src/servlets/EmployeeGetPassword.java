@@ -1,6 +1,6 @@
 package servlets;
 
-import database.SQLQuery;
+import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +27,8 @@ public class EmployeeGetPassword extends HttpServlet {
         String companyName = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
         try {
-            if (SQLQuery.isEmployeeInCompany(email, companyName)) {
-                String encryptedPassword = SQLQuery.getEmployeePassword(companyName, email);
+            if (SQLQuerySelect.isEmployeeInCompany(email, companyName)) {
+                String encryptedPassword = SQLQuerySelect.getEmployeePassword(companyName, email);
 
                 PrintWriter out = response.getWriter();
                 out.println(encryptedPassword);

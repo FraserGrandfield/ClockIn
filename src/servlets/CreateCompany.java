@@ -1,6 +1,7 @@
 package servlets;
 
-import database.SQLQuery;
+import database.SQLQueryInsert;
+import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,13 +28,13 @@ public class CreateCompany extends HttpServlet {
         String compPassword = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
         try {
-            if (SQLQuery.doesCompanyNameExist(compName)) {
+            if (SQLQuerySelect.doesCompanyNameExist(compName)) {
                 //402: company already exists
                 response.sendError(402);
                 return;
             }
 
-            SQLQuery.addCompany(compName, compPassword);
+            SQLQueryInsert.addCompany(compName, compPassword);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package servlets;
 
-import database.SQLQuery;
+import database.SQLQueryInsert;
+import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,22 +32,22 @@ public class CreateEmployee extends HttpServlet {
 
         try {
 
-            if (!SQLQuery.doesEmployeeHaveCreateAccountValidToken(token)) {
+            if (!SQLQuerySelect.doesEmployeeHaveCreateAccountValidToken(token)) {
                 //401: Client doesn't have a valid token
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
 
-            String companyName = SQLQuery.getCompanyNameFromCreateEmployeeToken(token);
+            String companyName = SQLQuerySelect.getCompanyNameFromCreateEmployeeToken(token);
 
-            if (SQLQuery.isEmployeeInCompany(email, companyName)) {
+            if (SQLQuerySelect.isEmployeeInCompany(email, companyName)) {
                 //402: Employee email is already with the company
                 response.sendError(402);
                 return;
             }
 
             int employeeId = generateEmployeeId();
-            SQLQuery.addEmployee(employeeId, name, email, password, companyName);
+            SQLQueryInsert.addEmployee(employeeId, name, email, password, companyName);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,8 +68,8 @@ public class CreateEmployee extends HttpServlet {
         //Tries it ten times incase the Id it was gonna add had already been added.
         while (!gotId || count > 0) {
             try {
-                if (SQLQuery.doesEmployeeInTableExist()) {
-                    maxId = SQLQuery.getMaxEmployeeId();
+                if (SQLQuerySelect.doesEmployeeInTableExist()) {
+                    maxId = SQLQuerySelect.getMaxEmployeeId();
                     maxId++;
                     gotId = true;
                 } else {

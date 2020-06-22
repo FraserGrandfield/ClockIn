@@ -1,6 +1,8 @@
 package servlets;
 
-import database.SQLQuery;
+import database.SQLQueryDelete;
+import database.SQLQueryInsert;
+import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,14 +30,14 @@ public class CreateEmployeeCreateToken extends HttpServlet {
         String companyName = new String(Base64.getDecoder().decode(encodedAuth));
         boolean tokenUnique = false;
         try {
-            if (SQLQuery.doesCompanyHaveCreateEmployeeToken(companyName)) {
-                SQLQuery.deleteOldCompanyCreateEmployeeToken(companyName);
+            if (SQLQuerySelect.doesCompanyHaveCreateEmployeeToken(companyName)) {
+                SQLQueryDelete.deleteOldCompanyCreateEmployeeToken(companyName);
             }
             String token = "";
             //Ensure the token is unique.
             while (!tokenUnique) {
                 token = generateToken();
-                if (SQLQuery.isCreateEmployeeTokenUnique(token)) {
+                if (SQLQuerySelect.isCreateEmployeeTokenUnique(token)) {
                     tokenUnique = true;
                 }
             }
@@ -43,7 +45,7 @@ public class CreateEmployeeCreateToken extends HttpServlet {
             dateTime = dateTime.plusWeeks(1);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQuery.addCompanyCreateEmployeeToken(companyName, token, dataTimeStr);
+            SQLQueryInsert.addCompanyCreateEmployeeToken(companyName, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();

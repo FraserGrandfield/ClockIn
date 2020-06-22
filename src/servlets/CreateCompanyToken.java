@@ -1,6 +1,8 @@
 package servlets;
 
-import database.SQLQuery;
+import database.SQLQueryDelete;
+import database.SQLQueryInsert;
+import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +30,15 @@ public class CreateCompanyToken  extends HttpServlet {
         String companyName = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
-            if (SQLQuery.doesCompanyHaveToken(companyName)) {
-                SQLQuery.deleteOldCompanyToken(companyName);
+            if (SQLQuerySelect.doesCompanyHaveToken(companyName)) {
+                SQLQueryDelete.deleteOldCompanyToken(companyName);
             }
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQuery.addCompanyToken(companyName, token, dataTimeStr);
+            SQLQueryInsert.addCompanyToken(companyName, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();

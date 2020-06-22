@@ -1,6 +1,8 @@
 package servlets;
 
-import database.SQLQuery;
+import database.SQLQueryDelete;
+import database.SQLQueryInsert;
+import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +31,8 @@ public class CreateEmployeeToken extends HttpServlet {
         int employeeId = Integer.parseInt(employeeIdString);
 
         try {
-            if (SQLQuery.doesEmployeeHaveToken(employeeId)) {
-                SQLQuery.deleteOldEmployeeToken(employeeId);
+            if (SQLQuerySelect.doesEmployeeHaveToken(employeeId)) {
+                SQLQueryDelete.deleteOldEmployeeToken(employeeId);
             }
 
             String token = generateToken();
@@ -38,7 +40,7 @@ public class CreateEmployeeToken extends HttpServlet {
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQuery.addEmployeeToken(employeeId, token, dataTimeStr);
+            SQLQueryInsert.addEmployeeToken(employeeId, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();
