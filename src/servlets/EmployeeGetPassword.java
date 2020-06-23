@@ -22,13 +22,11 @@ public class EmployeeGetPassword extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
-        String email = decodedAuth.substring(0, decodedAuth.indexOf('|'));
-        String companyName = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
+        String email = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
-            if (SQLQuerySelect.isEmployeeInCompany(email, companyName)) {
-                String encryptedPassword = SQLQuerySelect.getEmployeePassword(companyName, email);
+            if (SQLQuerySelect.isEmailInDatabase(email)) {
+                String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
 
                 PrintWriter out = response.getWriter();
                 out.println(encryptedPassword);

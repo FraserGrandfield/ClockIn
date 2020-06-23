@@ -27,12 +27,11 @@ public class CreateEmployeeToken extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String employeeIdString = new String(Base64.getDecoder().decode(encodedAuth));
-        int employeeId = Integer.parseInt(employeeIdString);
+        String email = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
-            if (SQLQuerySelect.doesEmployeeHaveToken(employeeId)) {
-                SQLQueryDelete.deleteOldEmployeeToken(employeeId);
+            if (SQLQuerySelect.doesEmployeeHaveToken(email)) {
+                SQLQueryDelete.deleteOldEmployeeToken(email);
             }
 
             String token = generateToken();
@@ -40,7 +39,7 @@ public class CreateEmployeeToken extends HttpServlet {
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQueryInsert.addEmployeeToken(employeeId, token, dataTimeStr);
+            SQLQueryInsert.addEmployeeToken(email, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();

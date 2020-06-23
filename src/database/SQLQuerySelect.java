@@ -14,7 +14,7 @@ public class SQLQuerySelect {
      * @return boolean true if company exists.
      * @throws SQLException
      */
-    public static boolean doesCompanyNameExist(String compName) throws SQLException {
+    public synchronized static boolean doesCompanyNameExist(String compName) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companieName FROM companies.companies WHERE companieName = '%s';", compName));
         String names = "";
@@ -27,20 +27,20 @@ public class SQLQuerySelect {
 
     /**
      * Checks if an employee already has a token.
-     * @param employeeId
+     * @param email
      * @return boolean true if they already have a token.
      * @throws SQLException
      */
-    public static boolean doesEmployeeHaveToken(int employeeId) throws SQLException {
+    public synchronized static boolean doesEmployeeHaveToken(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT employeeId FROM companies.token WHERE employeeId = '%s';", employeeId));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.token WHERE email = '%s';", email));
 
-        int name = 0;
+        String name = "";
         while (resultSet.next()) {
-            name = resultSet.getInt(1);
+            name = resultSet.getString(1);
         }
 
-        return (name == employeeId);
+        return (name.equals(email));
     }
 
     /**
@@ -48,33 +48,19 @@ public class SQLQuerySelect {
      * @return boolean true if there are fields in the employee table.
      * @throws SQLException
      */
-    public static boolean doesEmployeeInTableExist() throws SQLException {
+    public synchronized static boolean doesEmployeeInTableExist() throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT employeeId FROM companies.employees WHERE employeeID = '0';");
+        ResultSet resultSet = statement.executeQuery("SELECT email FROM companies.employees;");
 
-        int id = -1;
-        while (resultSet.next()) {
-            id = resultSet.getInt(1);
+        String temp = "";
+
+        //TODO make code netter
+        int i = 0;
+        while (resultSet.next() && i == 0) {
+            temp = resultSet.getString(1);
         }
 
-        return (id == 0);
-    }
-
-    /**
-     * Get the max employee Id in the employee table.
-     * @return int the max employee Id.
-     * @throws SQLException
-     */
-    public static int getMaxEmployeeId() throws SQLException {
-        Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT MAX(employeeID) FROM companies.employees;");
-
-        //-2 incase something goes wrong so the id will be -1
-        int id = -2;
-        while (resultSet.next()) {
-            id = resultSet.getInt(1);
-        }
-        return id;
+        return (!temp.equals(""));
     }
 
     /**
@@ -84,7 +70,7 @@ public class SQLQuerySelect {
      * @return boolean true if company has a valid token.
      * @throws SQLException
      */
-    public static boolean doesCompanyHaveValidToken(String token, String companyName) throws SQLException {
+    public synchronized static boolean doesCompanyHaveValidToken(String token, String companyName) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.tokencompany WHERE companyname = '%s';", companyName));
 
@@ -117,7 +103,7 @@ public class SQLQuerySelect {
      * @return boolean true if the company has a token.
      * @throws SQLException
      */
-    public static boolean doesCompanyHaveToken(String companyName) throws SQLException {
+    public synchronized static boolean doesCompanyHaveToken(String companyName) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companyname FROM companies.tokencompany WHERE companyname = '%s';", companyName));
 
@@ -135,7 +121,7 @@ public class SQLQuerySelect {
      * @return String encrypted password.
      * @throws SQLException
      */
-    public static String getCompanyPassword(String companyName) throws SQLException {
+    public synchronized static String getCompanyPassword(String companyName) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companiePassword FROM companies.companies WHERE companieName = '%s';", companyName));
 
@@ -148,14 +134,13 @@ public class SQLQuerySelect {
 
     /**
      * Gets the encrypted password of the employee.
-     * @param companyName company name.
      * @param email employee email.
      * @return String encrypted password of employee.
      * @throws SQLException
      */
-    public static String getEmployeePassword(String companyName, String email) throws SQLException {
+    public synchronized static String getEmployeePassword(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT password FROM companies.employees WHERE companieName = '%s' AND email = '%s';", companyName, email));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT password FROM companies.employees WHERE email = '%s';", email));
 
         String temp = "";
         while (resultSet.next()) {
@@ -164,18 +149,7 @@ public class SQLQuerySelect {
         return temp;
     }
 
-    public static String getEmployeeId(String companyName, String email) throws  SQLException {
-        Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT employeeID FROM companies.employees WHERE companieName = '%s' AND email = '%s';", companyName, email));
-
-        String temp = "";
-        while (resultSet.next()) {
-            temp = resultSet.getString(1);
-        }
-        return temp;
-    }
-
-    public static boolean doesCompanyHaveCreateEmployeeToken(String companyName) throws SQLException {
+    public synchronized static boolean doesCompanyHaveCreateEmployeeToken(String companyName) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companyName FROM companies.createemployeetoken WHERE companyName = '%s';", companyName));
 
@@ -187,7 +161,7 @@ public class SQLQuerySelect {
         return tempName.equals(companyName);
     }
 
-    public static boolean doesEmployeeHaveCreateAccountValidToken(String token) throws SQLException {
+    public synchronized static boolean doesEmployeeHaveCreateAccountValidToken(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.createemployeetoken WHERE token = '%s';", token));
 
@@ -210,7 +184,7 @@ public class SQLQuerySelect {
         return true;
     }
 
-    public static String getCompanyNameFromCreateEmployeeToken(String token) throws SQLException {
+    public synchronized static String getCompanyNameFromCreateEmployeeToken(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companyName FROM companies.createemployeetoken WHERE token = '%s';", token));
 
@@ -221,7 +195,7 @@ public class SQLQuerySelect {
         return compName;
     }
 
-    public static boolean isCreateEmployeeTokenUnique(String token) throws SQLException {
+    public synchronized static boolean isCreateEmployeeTokenUnique(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT token FROM companies.createemployeetoken WHERE token = '%s';", token));
 
@@ -233,9 +207,9 @@ public class SQLQuerySelect {
         return !(temp.equals(token));
     }
 
-    public static boolean isEmployeeInCompany(String email, String companyName) throws SQLException {
+    public synchronized static boolean isEmailInDatabase(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.employees WHERE email = '%s' AND companieName = '%s';", email, companyName));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.employees WHERE email = '%s';", email));
 
         String temp;
         for(temp = ""; resultSet.next(); temp = resultSet.getString(1)) {

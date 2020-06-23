@@ -40,47 +40,18 @@ public class CreateEmployee extends HttpServlet {
 
             String companyName = SQLQuerySelect.getCompanyNameFromCreateEmployeeToken(token);
 
-            if (SQLQuerySelect.isEmployeeInCompany(email, companyName)) {
+            if (SQLQuerySelect.isEmailInDatabase(email)) {
                 //402: Employee email is already with the company
                 response.sendError(402);
                 return;
             }
 
-            int employeeId = generateEmployeeId();
-            SQLQueryInsert.addEmployee(employeeId, name, email, password, companyName);
+            SQLQueryInsert.addEmployee(email, name, password, companyName);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
         }
-    }
-
-    /**
-     * Generates ID for employee, gets current max Id + 1.
-     * @return Id
-     */
-    //TODO throw the exception instead of catching it here
-    private int generateEmployeeId() {
-        boolean gotId = false;
-        int maxId = -1;
-        int count = 10;
-        //Tries it ten times incase the Id it was gonna add had already been added.
-        while (!gotId || count > 0) {
-            try {
-                if (SQLQuerySelect.doesEmployeeInTableExist()) {
-                    maxId = SQLQuerySelect.getMaxEmployeeId();
-                    maxId++;
-                    gotId = true;
-                } else {
-                    maxId = 0;
-                    gotId = true;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            count--;
-        }
-        return maxId;
     }
 }
