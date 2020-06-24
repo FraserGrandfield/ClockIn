@@ -3,6 +3,12 @@ package database;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * SQL query class for inserting into the database.
+ * @author Fraser Grandfield
+ * @version 1.0
+ * @since 24/06/20
+ */
 public class SQLQueryInsert {
 
     /**
@@ -42,7 +48,7 @@ public class SQLQueryInsert {
     }
 
     /**
-     * Adds a company token
+     * Adds a company token.
      * @param companyName company name.
      * @param token token.
      * @param timeStamp timestamp.
@@ -53,10 +59,27 @@ public class SQLQueryInsert {
         statement.execute(String.format("INSERT INTO companies.tokencompany VALUES ('%s','%s', '%s');", companyName, token, timeStamp));
     }
 
+    /**
+     * Adds token that employees use to create an account.
+     * @param companyName company name.
+     * @param token token.
+     * @param timeStamp timestamp.
+     * @throws SQLException
+     */
     public synchronized static void addCompanyCreateEmployeeToken(String companyName, String token, String timeStamp) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         statement.execute(String.format("INSERT INTO companies.createemployeetoken VALUES ('%s','%s', '%s');", companyName, token, timeStamp));
     }
 
-
+    /**
+     * Adds a clock in time stamp to the timestamp table.
+     * @param timeStampId time stamp Id.
+     * @param email email.
+     * @param timeStamp time stamp.
+     * @throws SQLException
+     */
+    public synchronized static void addClockInTimeStamp(String timeStampId, String email, String timeStamp) throws SQLException{
+        Statement statement = DataBase.getConnection().createStatement();
+        statement.execute(String.format("INSERT INTO companies.timestamps VALUES ('%s', '%s', '%s', %s);", timeStampId, email, timeStamp, null));
+    }
 }

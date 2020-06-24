@@ -84,4 +84,14 @@
         <url-pattern>/createemployeecreatetoken/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ClockIn</servlet-name>
+        <servlet-class>servlets.ClockIn</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ClockIn</servlet-name>
+        <url-pattern>/clockin/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

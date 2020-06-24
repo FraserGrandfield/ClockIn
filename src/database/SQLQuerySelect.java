@@ -6,6 +6,12 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * SQL query class for selecting from the database.
+ * @author Fraser Grandfield
+ * @version 1.0
+ * @since 24/06/20
+ */
 public class SQLQuerySelect {
 
     /**
@@ -58,6 +64,7 @@ public class SQLQuerySelect {
         int i = 0;
         while (resultSet.next() && i == 0) {
             temp = resultSet.getString(1);
+            i++;
         }
 
         return (!temp.equals(""));
@@ -149,6 +156,12 @@ public class SQLQuerySelect {
         return temp;
     }
 
+    /**
+     * Checks if a company has a create employee token.
+     * @param companyName company name.
+     * @return boolean true if the company has a token.
+     * @throws SQLException
+     */
     public synchronized static boolean doesCompanyHaveCreateEmployeeToken(String companyName) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companyName FROM companies.createemployeetoken WHERE companyName = '%s';", companyName));
@@ -161,6 +174,12 @@ public class SQLQuerySelect {
         return tempName.equals(companyName);
     }
 
+    /**
+     * Checks if an employee has a valid token to create an account.
+     * @param token token.
+     * @return boolean true if the employee has a valid token.
+     * @throws SQLException
+     */
     public synchronized static boolean doesEmployeeHaveCreateAccountValidToken(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.createemployeetoken WHERE token = '%s';", token));
@@ -178,12 +197,16 @@ public class SQLQuerySelect {
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime tokenTime = LocalDateTime.parse(dataTime, dateTimeFormatter);
-        if (currentTime.isAfter(tokenTime)) {
-            return false;
-        }
-        return true;
+
+        return (tokenTime.isAfter(currentTime));
     }
 
+    /**
+     * Gets the company name from create employee token.
+     * @param token token.
+     * @return String company name.
+     * @throws SQLException
+     */
     public synchronized static String getCompanyNameFromCreateEmployeeToken(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT companyName FROM companies.createemployeetoken WHERE token = '%s';", token));
@@ -195,6 +218,12 @@ public class SQLQuerySelect {
         return compName;
     }
 
+    /**
+     * Checks if the employees token is unique.
+     * @param token token.
+     * @return boolean true if the token is unique.
+     * @throws SQLException
+     */
     public synchronized static boolean isCreateEmployeeTokenUnique(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT token FROM companies.createemployeetoken WHERE token = '%s';", token));
@@ -207,6 +236,12 @@ public class SQLQuerySelect {
         return !(temp.equals(token));
     }
 
+    /**
+     * Checks if an email is in the employees table.
+     * @param email employees email.
+     * @return boolean true if the email is in the table.
+     * @throws SQLException
+     */
     public synchronized static boolean isEmailInDatabase(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.employees WHERE email = '%s';", email));
@@ -216,5 +251,64 @@ public class SQLQuerySelect {
         }
 
         return temp.equals(email);
+    }
+
+    /**
+     * Checks if the employee has a valid token.
+     * @param token token.
+     * @return boolean true if the employee has a valid token.
+     * @throws SQLException
+     */
+    public synchronized static boolean doesEmployeeHaveValidToken(String token) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.token WHERE token = '%s';", token));
+
+        String tempToken = "";
+        String tempDateTime = "";
+        while (resultSet.next()) {
+            tempToken = resultSet.getString(2);
+            tempDateTime = resultSet.getString(3);
+        }
+
+        if (!token.equals(tempToken)) {
+            return false;
+        }
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime tokenTime = LocalDateTime.parse(tempDateTime, dateTimeFormatter);
+        return (tokenTime.isAfter(currentTime));
+    }
+
+    /**
+     * Gets the employees emailf from the token table.
+     * @param token token.
+     * @return String the employees email.
+     * @throws SQLException
+     */
+    public synchronized static String getEmployeeEmailFromToken(String token) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.token WHERE token = '%s';", token));
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return temp;
+    }
+
+    /**
+     * Checks if a time stamp Id exists in the timestamps table.
+     * @param timeStampId time stamp Id.
+     * @return boolean true if the Id exists in the timestamps table.
+     * @throws SQLException
+     */
+    public synchronized static boolean doesTimeStampIdExist(String timeStampId) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT timestampID FROM companies.timestamps WHERE timestampID = '%s';", timeStampId));
+
+        String temp;
+        for(temp = ""; resultSet.next(); temp = resultSet.getString(1)) {
+        }
+
+        return temp.equals(timeStampId);
     }
 }
