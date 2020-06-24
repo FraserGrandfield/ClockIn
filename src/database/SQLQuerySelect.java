@@ -1,5 +1,6 @@
 package database;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -310,5 +311,24 @@ public class SQLQuerySelect {
         }
 
         return temp.equals(timeStampId);
+    }
+
+    /**
+     * Checks if there is a clock in timestamp without a clock out timestamp.
+     * @param email employee email.
+     * @return boolean true if the employee can add a clock out timestamp.
+     * @throws SQLException
+     */
+    public synchronized static boolean isThereClockOutTSOfNull(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM companies.timestamps WHERE email = '%s' AND clockOut IS NULL;", email));
+
+        String tempClockOut = "";
+        String tempEmail = "";
+        while (resultSet.next()) {
+            tempClockOut = resultSet.getString(4);
+            tempEmail = resultSet.getString(2);
+        }
+        return (tempClockOut == null && !tempEmail.equals(""));
     }
 }

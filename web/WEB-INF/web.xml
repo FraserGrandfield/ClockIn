@@ -63,16 +63,6 @@
         <servlet-name>EmployeeGetPassword</servlet-name>
         <url-pattern>/employeegetpassword/*</url-pattern>
     </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>GetEmployeeId</servlet-name>
-        <servlet-class>servlets.GetEmployeeId</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>GetEmployeeId</servlet-name>
-        <url-pattern>/getemployeeid/*</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>CreateEmployeeCreateToken</servlet-name>
@@ -92,6 +82,16 @@
     <servlet-mapping>
         <servlet-name>ClockIn</servlet-name>
         <url-pattern>/clockin/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ClockOut</servlet-name>
+        <servlet-class>servlets.ClockOut</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ClockOut</servlet-name>
+        <url-pattern>/clockout/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
