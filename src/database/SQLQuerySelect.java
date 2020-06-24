@@ -331,4 +331,39 @@ public class SQLQuerySelect {
         }
         return (tempClockOut == null && !tempEmail.equals(""));
     }
+
+    /**
+     * Gets the company name from a company token.
+     * @param token token.
+     * @return String the company name.
+     * @throws SQLException
+     */
+    public synchronized static String getCompanyNameFromToken(String token) throws SQLException {
+        Statement statement= DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT companyname FROM companies.tokencompany WHERE token = '%s';", token));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return temp;
+    }
+
+    /**
+     * Checks if an employee is with a company.
+     * @param email employee email.
+     * @param companyName company name.
+     * @return boolean true if the employee is with the company.
+     * @throws SQLException
+     */
+    public synchronized static boolean isEmployeeWithCompany(String email, String companyName) throws SQLException {
+        Statement statement= DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT email FROM companies.employees WHERE company = '%s' AND email = '%s';", companyName, email));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return (temp.equals(email));
+    }
 }

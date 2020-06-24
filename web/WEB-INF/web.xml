@@ -93,5 +93,15 @@
         <servlet-name>ClockOut</servlet-name>
         <url-pattern>/clockout/*</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>DeleteEmployee</servlet-name>
+        <servlet-class>servlets.DeleteEmployee</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>DeleteEmployee</servlet-name>
+        <url-pattern>/deleteemployee/*</url-pattern>
+    </servlet-mapping>
+    
 </web-app>

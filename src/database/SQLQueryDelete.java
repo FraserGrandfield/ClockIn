@@ -40,4 +40,16 @@ public class SQLQueryDelete {
         Statement statement = DataBase.getConnection().createStatement();
         statement.execute(String.format("DELETE FROM companies.createemployeetoken WHERE companyName = '%s';", companyName));
     }
+
+    /**
+     * Delete an employee from the database.
+     * @param email employee email.
+     * @throws SQLException
+     */
+    public synchronized static void deleteEmployee(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        statement.execute(String.format("DELETE FROM companies.timestamps WHERE email = '%s';", email));
+        statement.execute(String.format("DELETE FROM companies.token WHERE email = '%s';", email));
+        statement.execute(String.format("DELETE FROM companies.employees WHERE email = '%s';", email));
+    }
 }
