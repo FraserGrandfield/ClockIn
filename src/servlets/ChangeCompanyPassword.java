@@ -10,6 +10,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Base64;
 
+/**
+ * Change company password.
+ * @author Fraser Grandfield
+ * @version 1.0
+ * @since 04/07/2020
+ */
 public class ChangeCompanyPassword extends HttpServlet {
 
     @Override

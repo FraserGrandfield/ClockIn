@@ -47,6 +47,12 @@ public class SQLQueryUpdate {
         statement.execute(String.format("UPDATE companies.employees SET password = '%s' WHERE email = '%s';", newPassword, email));
     }
 
+    /**
+     * Update companies password.
+     * @param compName company name.
+     * @param newPassword companies new password.
+     * @throws SQLException
+     */
     public synchronized static void updateCompanyPassword(String compName, String newPassword) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         statement.execute(String.format("UPDATE companies.companies SET companiePassword = '%s' WHERE companieName = '%s';", newPassword, compName));
