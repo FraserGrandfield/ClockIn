@@ -10,6 +10,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Base64;
 
+/**
+ * Log a company out.
+ * @author Fraser Grandfield
+ * @version 1.0
+ * @since 04/07/2020
+ */
 public class LogOutCompany extends HttpServlet {
 
     @Override

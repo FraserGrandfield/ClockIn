@@ -17,7 +17,7 @@ import java.util.Base64;
  * @since 24/06/20
  */
 public class UpdateEmployeeDetails extends HttpServlet {
-//TODO test this servlet
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
