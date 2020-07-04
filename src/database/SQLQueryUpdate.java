@@ -35,4 +35,15 @@ public class SQLQueryUpdate {
         statement.execute(String.format("UPDATE companies.token SET email = '%s' WHERE email = '%s';", newEmail, oldEmail));
         statement.execute(String.format("UPDATE companies.employees SET email = '%s', name = '%s' WHERE email = '%s';", newEmail, name, oldEmail));
     }
+
+    /**
+     * Update employees password.
+     * @param email employees email.
+     * @param newPassword employees new password.
+     * @throws SQLException
+     */
+    public synchronized static void updateEmployeePassword(String email, String newPassword) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        statement.execute(String.format("UPDATE companies.employees SET password = '%s' WHERE email = '%s';", newPassword, email));
+    }
 }

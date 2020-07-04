@@ -133,4 +133,14 @@
         <servlet-name>LogOutCompany</servlet-name>
         <url-pattern>/logoutcompany/*</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangeEmployeePassword</servlet-name>
+        <servlet-class>servlets.ChangeEmployeePassword</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ChangeEmployeePassword</servlet-name>
+        <url-pattern>/changeemployeepassword/*</url-pattern>
+    </servlet-mapping>
 </web-app>
