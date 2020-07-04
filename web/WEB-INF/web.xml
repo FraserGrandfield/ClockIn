@@ -143,4 +143,15 @@
         <servlet-name>ChangeEmployeePassword</servlet-name>
         <url-pattern>/changeemployeepassword/*</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangeCompanyPassword</servlet-name>
+        <servlet-class>servlets.ChangeCompanyPassword</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ChangeCompanyPassword</servlet-name>
+        <url-pattern>/changecompanypassword/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>
