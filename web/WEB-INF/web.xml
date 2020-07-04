@@ -104,4 +104,33 @@
         <url-pattern>/deleteemployee/*</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>UpdateEmployeeDetails</servlet-name>
+        <servlet-class>servlets.UpdateEmployeeDetails</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UpdateEmployeeDetails</servlet-name>
+        <url-pattern>/updateemployeedetails/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogOutEmployee</servlet-name>
+        <servlet-class>servlets.LogOutEmployee</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LogOutEmployee</servlet-name>
+        <url-pattern>/logoutemployee/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogOutCompany</servlet-name>
+        <servlet-class>servlets.LogOutCompany</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LogOutCompany</servlet-name>
+        <url-pattern>/logoutcompany/*</url-pattern>
+    </servlet-mapping>
 </web-app>
