@@ -36,7 +36,7 @@ public class SQLQuery {
     protected static String employeeToken = "token";
     protected static String employeeTokenTimestamp = "timestamp";
     //Table tokencompany
-    protected static String tokenCompanyEmailPKFK = "email";
+    protected static String tokenCompanyEmailPKFK = "companyEmail";
     protected static String companyToken = "token";
     protected static String companyTimeStamp = "timestamp";
 }

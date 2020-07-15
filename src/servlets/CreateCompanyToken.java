@@ -33,16 +33,19 @@ public class CreateCompanyToken  extends HttpServlet {
             if (SQLQuerySelect.doesCompanyHaveToken(companyEmail)) {
                 SQLQueryDelete.deleteOldCompanyToken(companyEmail);
             }
+
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
             SQLQueryInsert.addCompanyToken(companyEmail, token, dataTimeStr);
+
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();
             out.flush();
+
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

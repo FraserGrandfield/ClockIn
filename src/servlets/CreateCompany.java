@@ -26,7 +26,6 @@ public class CreateCompany extends HttpServlet {
         String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
         String compEmail = decodedAuth.substring(0, decodedAuth.indexOf('|'));
         String compPassword = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
-
         try {
             if (SQLQuerySelect.doesCompanyEmailExist(compEmail)) {
                 //402: company already exists
