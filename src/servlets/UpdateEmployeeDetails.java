@@ -25,11 +25,14 @@ public class UpdateEmployeeDetails extends HttpServlet {
         String token = new String(Base64.getDecoder().decode(encodedHeader));
 
         try {
-            if (SQLQuerySelect.doesEmployeeHaveValidToken(token)) {
-                String oldEmail = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            String oldEmail = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            if (SQLQuerySelect.doesEmployeeHaveValidToken(token, oldEmail)) {
                 String newEmail = request.getParameter("email");
-                String newName = request.getParameter("name");
-                SQLQueryUpdate.updateEmployeeDetails(oldEmail, newEmail, newName);
+                String newFName = request.getParameter("firstName");
+                String newSName = request.getParameter("secondName");
+                String newPay = request.getParameter("pay");
+
+                SQLQueryUpdate.updateEmployeeDetails(oldEmail, newEmail, newFName, newSName, newPay);
                 response.sendError(HttpServletResponse.SC_OK);
             } else {
                 //Error: 406 invalid token

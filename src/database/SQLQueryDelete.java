@@ -9,7 +9,7 @@ import java.sql.Statement;
  * @version 1.0
  * @since 24/06/20
  */
-public class SQLQueryDelete {
+public class SQLQueryDelete extends SQLQuery {
 
     /**
      * Delete an employee token
@@ -18,27 +18,27 @@ public class SQLQueryDelete {
      */
     public synchronized static void deleteOldEmployeeToken(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM companies.token WHERE email = '%s';", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableToken + " WHERE " + tokenEmployeeEmailPKFK + " = '%s';", email));
     }
 
     /**
      * Deletes a companies token from the database.
-     * @param companyName company name.
+     * @param companyEmail company email.
      * @throws SQLException
      */
-    public synchronized static void deleteOldCompanyToken(String companyName) throws SQLException {
+    public synchronized static void deleteOldCompanyToken(String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM companies.tokencompany WHERE companyname = '%s';", companyName));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTokenCompany + " WHERE " + tokenCompanyEmailPKFK + " = '%s';", companyEmail));
     }
 
     /**
      * Delete a token that employees use to create accounts with.
-     * @param companyName company name.
+     * @param companyEmail company email.
      * @throws SQLException
      */
-    public synchronized static void deleteOldCompanyCreateEmployeeToken(String companyName) throws SQLException {
+    public synchronized static void deleteOldCompanyCreateEmployeeToken(String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM companies.createemployeetoken WHERE companyName = '%s';", companyName));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + tokenCompanyEmailPKFK + " = '%s';", companyEmail));
     }
 
     /**
@@ -48,8 +48,8 @@ public class SQLQueryDelete {
      */
     public synchronized static void deleteEmployee(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM companies.timestamps WHERE email = '%s';", email));
-        statement.execute(String.format("DELETE FROM companies.token WHERE email = '%s';", email));
-        statement.execute(String.format("DELETE FROM companies.employees WHERE email = '%s';", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s';", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableToken + " WHERE " + tokenEmployeeEmailPKFK + " = '%s';", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
     }
 }

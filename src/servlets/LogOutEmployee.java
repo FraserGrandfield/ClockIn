@@ -25,8 +25,8 @@ public class LogOutEmployee extends HttpServlet {
         String token = new String(Base64.getDecoder().decode(encodedToken));
 
         try {
-            if (SQLQuerySelect.doesEmployeeHaveValidToken(token)) {
-                String email = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            String email = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            if (SQLQuerySelect.doesEmployeeHaveValidToken(token, email)) {
                 SQLQueryDelete.deleteOldEmployeeToken(email);
                 response.sendError(HttpServletResponse.SC_OK);
             } else {

@@ -23,11 +23,11 @@ public class CompanyGetPassword extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String companyName = new String(Base64.getDecoder().decode(encodedAuth));
+        String companyEmail = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
-            if (SQLQuerySelect.doesCompanyNameExist(companyName)) {
-                String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyName);
+            if (SQLQuerySelect.doesCompanyEmailExist(companyEmail)) {
+                String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyEmail);
 
                 PrintWriter out = response.getWriter();
                 out.println(encryptedPassword);

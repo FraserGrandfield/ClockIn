@@ -95,13 +95,13 @@
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>DeleteEmployee</servlet-name>
-        <servlet-class>servlets.DeleteEmployee</servlet-class>
+        <servlet-name>CompanyDeleteEmployee</servlet-name>
+        <servlet-class>servlets.CompanyDeleteEmployee</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>DeleteEmployee</servlet-name>
-        <url-pattern>/deleteemployee/*</url-pattern>
+        <servlet-name>CompanyDeleteEmployee</servlet-name>
+        <url-pattern>/companydeleteemployee/*</url-pattern>
     </servlet-mapping>
     
     <servlet>

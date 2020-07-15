@@ -29,8 +29,8 @@ public class ClockIn extends HttpServlet {
         String clockInTS = request.getParameter("timestamp");
 
         try {
-            if (SQLQuerySelect.doesEmployeeHaveValidToken(token)) {
-                String email = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            String email = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            if (SQLQuerySelect.doesEmployeeHaveValidToken(token, email)) {
                 String timeStampId = email + clockInTS;
 
                 if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {

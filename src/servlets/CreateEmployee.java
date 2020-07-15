@@ -27,8 +27,10 @@ public class CreateEmployee extends HttpServlet {
         String token = decodedAuth.substring(0, decodedAuth.indexOf('|'));
         String password = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
-        String name = request.getParameter("name");
+        String firstName = request.getParameter("firstName");
+        String secondName = request.getParameter("secondName");
         String email = request.getParameter("email");
+        String pay = request.getParameter("pay");
 
         try {
 
@@ -38,7 +40,7 @@ public class CreateEmployee extends HttpServlet {
                 return;
             }
 
-            String companyName = SQLQuerySelect.getCompanyNameFromCreateEmployeeToken(token);
+            String companyEmail = SQLQuerySelect.getCompanyEmailFromCreateEmployeeToken(token);
 
             if (SQLQuerySelect.isEmailInDatabase(email)) {
                 //402: Employee email is already with the company
@@ -46,7 +48,7 @@ public class CreateEmployee extends HttpServlet {
                 return;
             }
 
-            SQLQueryInsert.addEmployee(email, name, password, companyName);
+            SQLQueryInsert.addEmployee(email, firstName, secondName, password, companyEmail, pay);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();

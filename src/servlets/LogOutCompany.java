@@ -25,7 +25,7 @@ public class LogOutCompany extends HttpServlet {
         String token = new String(Base64.getDecoder().decode(encodedToken));
 
         try {
-            String compName = SQLQuerySelect.getCompanyNameFromToken(token);
+            String compName = SQLQuerySelect.getCompanyEmailFromToken(token);
             if (SQLQuerySelect.doesCompanyHaveValidToken(token, compName)) {
                 SQLQueryDelete.deleteOldCompanyToken(compName);
                 response.sendError(HttpServletResponse.SC_OK);

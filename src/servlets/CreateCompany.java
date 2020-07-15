@@ -24,17 +24,18 @@ public class CreateCompany extends HttpServlet {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
         String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
-        String compName = decodedAuth.substring(0, decodedAuth.indexOf('|'));
+        String compEmail = decodedAuth.substring(0, decodedAuth.indexOf('|'));
         String compPassword = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
 
         try {
-            if (SQLQuerySelect.doesCompanyNameExist(compName)) {
+            if (SQLQuerySelect.doesCompanyEmailExist(compEmail)) {
                 //402: company already exists
                 response.sendError(402);
                 return;
             }
+            String name = request.getParameter("companyName");
 
-            SQLQueryInsert.addCompany(compName, compPassword);
+            SQLQueryInsert.addCompany(compEmail, name, compPassword);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();

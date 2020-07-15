@@ -25,10 +25,10 @@ public class ChangeCompanyPassword extends HttpServlet {
         String token = new String(Base64.getDecoder().decode(encodedToken));
 
         try {
-            String compName = SQLQuerySelect.getCompanyNameFromToken(token);
-            if (SQLQuerySelect.doesCompanyHaveValidToken(token, compName)) {
+            String compEmail = SQLQuerySelect.getCompanyEmailFromToken(token);
+            if (SQLQuerySelect.doesCompanyHaveValidToken(token, compEmail)) {
                 String newPassword = request.getParameter("newPassword");
-                SQLQueryUpdate.updateCompanyPassword(compName, newPassword);
+                SQLQueryUpdate.updateCompanyPassword(compEmail, newPassword);
                 response.sendError(HttpServletResponse.SC_OK);
             } else {
                 //Error: 406 invalid token

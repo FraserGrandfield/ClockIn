@@ -27,18 +27,18 @@ public class CreateCompanyToken  extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String companyName = new String(Base64.getDecoder().decode(encodedAuth));
+        String companyEmail = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
-            if (SQLQuerySelect.doesCompanyHaveToken(companyName)) {
-                SQLQueryDelete.deleteOldCompanyToken(companyName);
+            if (SQLQuerySelect.doesCompanyHaveToken(companyEmail)) {
+                SQLQueryDelete.deleteOldCompanyToken(companyEmail);
             }
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
-            SQLQueryInsert.addCompanyToken(companyName, token, dataTimeStr);
+            SQLQueryInsert.addCompanyToken(companyEmail, token, dataTimeStr);
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();

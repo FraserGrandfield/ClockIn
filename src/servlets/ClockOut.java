@@ -25,8 +25,8 @@ public class ClockOut extends HttpServlet {
         String token = new String(Base64.getDecoder().decode(encodedHeader));
 
         try {
-            if (SQLQuerySelect.doesEmployeeHaveValidToken(token)) {
-                String email = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            String email = SQLQuerySelect.getEmployeeEmailFromToken(token);
+            if (SQLQuerySelect.doesEmployeeHaveValidToken(token, email)) {
                 if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {
                     String timeStamp = request.getParameter("timestamp");
                     SQLQueryUpdate.updateClockOutTimeStamp(email, timeStamp);

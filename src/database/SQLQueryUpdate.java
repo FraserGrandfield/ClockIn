@@ -9,7 +9,7 @@ import java.sql.Statement;
  * @version 1.0
  * @since 24/06/20
  */
-public class SQLQueryUpdate {
+public class SQLQueryUpdate extends SQLQuery{
 
     /**
      * Update the clock out field in the timestamps table.
@@ -19,21 +19,22 @@ public class SQLQueryUpdate {
      */
     public synchronized static void updateClockOutTimeStamp(String email, String timeStamp) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE companies.timestamps SET clockOut = '%s' WHERE email = '%s' AND clockOut IS NULL;", timeStamp, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockOut + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", timeStamp, email));
     }
 
     /**
      * Update employees name and email.
      * @param oldEmail employees old email.
      * @param newEmail employees new email.
-     * @param name employees new name.
+     * @param fName employees new first name.
+     * @param sName employees new second name.
      * @throws SQLException
      */
-    public synchronized static void updateEmployeeDetails(String oldEmail, String newEmail, String name) throws SQLException {
+    public synchronized static void updateEmployeeDetails(String oldEmail, String newEmail, String fName, String sName, String hourlyPay) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE companies.timestamps SET email = '%s' WHERE email = '%s';", newEmail, oldEmail));
-        statement.execute(String.format("UPDATE companies.token SET email = '%s' WHERE email = '%s';", newEmail, oldEmail));
-        statement.execute(String.format("UPDATE companies.employees SET email = '%s', name = '%s' WHERE email = '%s';", newEmail, name, oldEmail));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + timeStampEmployeeEmailFK + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s';", newEmail, oldEmail));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableToken + " SET " + tokenEmployeeEmailPKFK + " = '%s' WHERE " + tokenEmployeeEmailPKFK + " = '%s';", newEmail, oldEmail));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " + employeeEmailPK + " = '%s', " + firstName + " = '%s', " + secondName + " = '%s', " + employeeHourlyPay + " = '%s' WHERE " + employeeEmailPK + " = '%s';", newEmail, fName, sName, hourlyPay, oldEmail));
     }
 
     /**
@@ -44,17 +45,17 @@ public class SQLQueryUpdate {
      */
     public synchronized static void updateEmployeePassword(String email, String newPassword) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE companies.employees SET password = '%s' WHERE email = '%s';", newPassword, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " + employeePassword + " = '%s' WHERE " + employeeEmailPK + " = '%s';", newPassword, email));
     }
 
     /**
      * Update companies password.
-     * @param compName company name.
+     * @param companyEmail company name.
      * @param newPassword companies new password.
      * @throws SQLException
      */
-    public synchronized static void updateCompanyPassword(String compName, String newPassword) throws SQLException {
+    public synchronized static void updateCompanyPassword(String companyEmail, String newPassword) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE companies.companies SET companiePassword = '%s' WHERE companieName = '%s';", newPassword, compName));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableCompany + " SET " + companyPassword + " = '%s' WHERE " + companyEmailPK + " = '%s';", newPassword, companyEmail));
     }
 }
