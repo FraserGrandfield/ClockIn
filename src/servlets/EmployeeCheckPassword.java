@@ -1,5 +1,6 @@
 package servlets;
 
+import core.BCrypt;
 import database.SQLQuerySelect;
 
 import javax.servlet.http.HttpServlet;
@@ -16,25 +17,27 @@ import java.util.Base64;
  * @version 1.0
  * @since 20/06/20
  */
-public class EmployeeGetPassword extends HttpServlet {
+public class EmployeeCheckPassword extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
         String email = new String(Base64.getDecoder().decode(encodedAuth));
-
         try {
             if (SQLQuerySelect.isEmailInDatabase(email)) {
                 String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
 
-                PrintWriter out = response.getWriter();
-                out.println(encryptedPassword);
-                out.close();
-                out.flush();
+                String password = request.getParameter("password");
+
+                if (!BCrypt.checkpw(password, encryptedPassword)) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
                 response.sendError(HttpServletResponse.SC_OK);
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -67,7 +67,6 @@ public class SQLQueryInsert extends SQLQuery {
      * @param timeStamp timestamp.
      * @throws SQLException
      */
-    //TODO need to check if a token for that company already exists and if it has expired
     public synchronized static void addCompanyCreateEmployeeToken(String companyEmail, String token, String timeStamp) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         statement.execute(String.format("INSERT INTO " + databaseName + "." + tableCreateEmployeeToken + " VALUES ('%s','%s', '%s');", companyEmail, token, timeStamp));

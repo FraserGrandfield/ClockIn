@@ -1,5 +1,6 @@
 package servlets;
 
+import core.BCrypt;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 
@@ -34,7 +35,9 @@ public class CreateCompany extends HttpServlet {
             }
             String name = request.getParameter("companyName");
 
-            SQLQueryInsert.addCompany(compEmail, name, compPassword);
+            String hashedPassword = BCrypt.hashpw(compPassword, BCrypt.gensalt(12));
+
+            SQLQueryInsert.addCompany(compEmail, name, hashedPassword);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();

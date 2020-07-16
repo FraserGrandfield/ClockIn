@@ -45,23 +45,23 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>CompanyGetPassword</servlet-name>
-        <servlet-class>servlets.CompanyGetPassword</servlet-class>
+        <servlet-name>CompanyCheckPassword</servlet-name>
+        <servlet-class>servlets.CompanyCheckPassword</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>CompanyGetPassword</servlet-name>
-        <url-pattern>/companygetpassword/*</url-pattern>
+        <servlet-name>CompanyCheckPassword</servlet-name>
+        <url-pattern>/companycheckpassword/*</url-pattern>
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>EmployeeGetPassword</servlet-name>
-        <servlet-class>servlets.EmployeeGetPassword</servlet-class>
+        <servlet-name>EmployeeCheckPassword</servlet-name>
+        <servlet-class>servlets.EmployeeCheckPassword</servlet-class>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>EmployeeGetPassword</servlet-name>
-        <url-pattern>/employeegetpassword/*</url-pattern>
+        <servlet-name>EmployeeCheckPassword</servlet-name>
+        <url-pattern>/employeecheckpassword/*</url-pattern>
     </servlet-mapping>
 
     <servlet>

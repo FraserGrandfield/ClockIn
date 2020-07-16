@@ -28,22 +28,25 @@ public class CreateEmployeeToken extends HttpServlet {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
         String email = new String(Base64.getDecoder().decode(encodedAuth));
+        System.out.println("fgf");
 
         try {
             if (SQLQuerySelect.doesEmployeeHaveToken(email)) {
                 SQLQueryDelete.deleteOldEmployeeToken(email);
             }
-
+            System.out.println("dfsdf");
             String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusMinutes(20);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String dataTimeStr = dateTimeFormatter.format(dateTime);
             SQLQueryInsert.addEmployeeToken(email, token, dataTimeStr);
+
             PrintWriter out = response.getWriter();
             out.println(token);
             out.close();
             out.flush();
+
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

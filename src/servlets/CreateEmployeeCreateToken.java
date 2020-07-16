@@ -33,14 +33,7 @@ public class CreateEmployeeCreateToken extends HttpServlet {
             if (SQLQuerySelect.doesCompanyHaveCreateEmployeeToken(companyEmail)) {
                 SQLQueryDelete.deleteOldCompanyCreateEmployeeToken(companyEmail);
             }
-            String token = "";
-            //Ensure the token is unique.
-            while (!tokenUnique) {
-                token = generateToken();
-                if (SQLQuerySelect.isCreateEmployeeTokenUnique(token)) {
-                    tokenUnique = true;
-                }
-            }
+            String token = generateToken();
             LocalDateTime dateTime = LocalDateTime.now();
             dateTime = dateTime.plusWeeks(1);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

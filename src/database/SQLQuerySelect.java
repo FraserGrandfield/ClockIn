@@ -215,24 +215,23 @@ public class SQLQuerySelect extends SQLQuery{
         return compEmail;
     }
 
-    /**
-     * Checks if the employees token is unique.
-     * @param token token.
-     * @return boolean true if the token is unique.
-     * @throws SQLException
-     */
-    //TODO as its a uuid no longer need to check if its unique
-    public synchronized static boolean isCreateEmployeeTokenUnique(String token) throws SQLException {
-        Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeToken + " FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeToken + " = '%s';", token));
-
-        String temp = "";
-        while (resultSet.next()) {
-            temp = resultSet.getString(1);
-        }
-
-        return !(temp.equals(token));
-    }
+//    /**
+//     * Checks if the employees token is unique.
+//     * @param token token.
+//     * @return boolean true if the token is unique.
+//     * @throws SQLException
+//     */
+//    public synchronized static boolean isCreateEmployeeTokenUnique(String token) throws SQLException {
+//        Statement statement = DataBase.getConnection().createStatement();
+//        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeToken + " FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeToken + " = '%s';", token));
+//
+//        String temp = "";
+//        while (resultSet.next()) {
+//            temp = resultSet.getString(1);
+//        }
+//
+//        return !(temp.equals(token));
+//    }
 
     /**
      * Checks if an email is in the employees table.

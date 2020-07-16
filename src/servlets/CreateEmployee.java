@@ -1,5 +1,6 @@
 package servlets;
 
+import core.BCrypt;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 
@@ -47,8 +48,9 @@ public class CreateEmployee extends HttpServlet {
                 response.sendError(402);
                 return;
             }
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
 
-            SQLQueryInsert.addEmployee(email, firstName, secondName, password, companyEmail, pay);
+            SQLQueryInsert.addEmployee(email, firstName, secondName, hashedPassword, companyEmail, pay);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
