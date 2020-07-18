@@ -32,8 +32,8 @@ public class ClockOut extends HttpServlet {
                     SQLQueryUpdate.updateClockOutTimeStamp(email, timeStamp);
                     response.sendError(HttpServletResponse.SC_OK);
                 } else {
-                    //Error: 408 no clock in value to pair with
-                    response.sendError(408);
+                    //Error: 461 no clock in value to pair with
+                    response.sendError(461);
                     return;
                 }
             } else {

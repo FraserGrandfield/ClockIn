@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * Get employee encrypted password.
@@ -27,13 +27,13 @@ public class EmployeeCheckPassword extends HttpServlet {
         try {
             if (SQLQuerySelect.isEmailInDatabase(email)) {
                 String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
-
                 String password = request.getParameter("password");
 
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
+
                 response.sendError(HttpServletResponse.SC_OK);
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -45,4 +45,9 @@ public class EmployeeCheckPassword extends HttpServlet {
             return;
         }
     }
+
+    private String generateToken() {
+        return UUID.randomUUID().toString();
+    }
+
 }

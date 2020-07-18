@@ -34,8 +34,8 @@ public class ClockIn extends HttpServlet {
                 String timeStampId = email + clockInTS;
 
                 if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {
-                    //Error: 408 There is already a clock in time needing a clock out pair
-                    response.sendError(408);
+                    //Error: 460 There is already a clock in time needing a clock out pair
+                    response.sendError(460);
                     return;
                 }
 

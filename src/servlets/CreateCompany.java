@@ -41,7 +41,7 @@ public class CreateCompany extends HttpServlet {
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
-            //403: error adding company
+            //503: error adding company
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
         }
