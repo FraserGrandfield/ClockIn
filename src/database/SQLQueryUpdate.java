@@ -33,7 +33,6 @@ public class SQLQueryUpdate extends SQLQuery{
     public synchronized static void updateEmployeeDetails(String oldEmail, String newEmail, String fName, String sName, String hourlyPay) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + timeStampEmployeeEmailFK + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s';", newEmail, oldEmail));
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableToken + " SET " + tokenEmployeeEmailPKFK + " = '%s' WHERE " + tokenEmployeeEmailPKFK + " = '%s';", newEmail, oldEmail));
         statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " + employeeEmailPK + " = '%s', " + firstName + " = '%s', " + secondName + " = '%s', " + employeeHourlyPay + " = '%s' WHERE " + employeeEmailPK + " = '%s';", newEmail, fName, sName, hourlyPay, oldEmail));
     }
 

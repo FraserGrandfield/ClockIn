@@ -6,6 +6,7 @@ import database.SQLQueryUpdate;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Base64;
@@ -20,13 +21,10 @@ public class UpdateEmployeeDetails extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authHeader = request.getHeader("authorization");
-        String encodedHeader = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String token = new String(Base64.getDecoder().decode(encodedHeader));
 
         try {
-            String oldEmail = SQLQuerySelect.getEmployeeEmailFromToken(token);
-            if (SQLQuerySelect.doesEmployeeHaveValidToken(token, oldEmail)) {
+            HttpSession session = request.getSession(false);
+            String oldEmail = (String) session.getAttribute("email");
                 String newEmail = request.getParameter("email");
                 String newFName = request.getParameter("firstName");
                 String newSName = request.getParameter("secondName");
@@ -34,10 +32,6 @@ public class UpdateEmployeeDetails extends HttpServlet {
 
                 SQLQueryUpdate.updateEmployeeDetails(oldEmail, newEmail, newFName, newSName, newPay);
                 response.sendError(HttpServletResponse.SC_OK);
-            } else {
-                //Error: 406 invalid token
-                response.sendError(406);
-                return;            }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

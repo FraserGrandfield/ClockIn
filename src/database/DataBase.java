@@ -20,7 +20,7 @@ public class DataBase {
 
     private final String CONNECTION_URL = "jdbc:mysql://localhost:3306/companies?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private final String CONNECTION_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private final File FILE = new File("C:\\Users\\fraser\\Documents\\A Documents\\ClockInSens\\ClockInSens.txt");
+    private final File FILE = new File("C:\\Users\\student\\Documents\\ClockInSens.txt");
 
     private DataBase(){
         try {

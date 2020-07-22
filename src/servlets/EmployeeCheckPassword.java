@@ -3,9 +3,11 @@ package servlets;
 import core.BCrypt;
 import database.SQLQuerySelect;
 
+import javax.jms.Session;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Base64;
@@ -21,10 +23,9 @@ public class EmployeeCheckPassword extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authHeader = request.getHeader("authorization");
-        String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String email = new String(Base64.getDecoder().decode(encodedAuth));
+
         try {
+            String email = request.getParameter("email");
             if (SQLQuerySelect.isEmailInDatabase(email)) {
                 String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
                 String password = request.getParameter("password");
@@ -33,6 +34,9 @@ public class EmployeeCheckPassword extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
+
+                HttpSession session = request.getSession();
+                session.setAttribute("email", email);
 
                 response.sendError(HttpServletResponse.SC_OK);
             } else {

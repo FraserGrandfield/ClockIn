@@ -7,6 +7,7 @@ import database.SQLQuerySelect;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -25,11 +26,10 @@ public class CreateEmployeeCreateToken extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authHeader = request.getHeader("authorization");
-        String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String companyEmail = new String(Base64.getDecoder().decode(encodedAuth));
-        boolean tokenUnique = false;
+        //TODO make this a method in create company servlet
         try {
+            HttpSession session = request.getSession(false);
+            String companyEmail = (String) session.getAttribute("email");
             if (SQLQuerySelect.doesCompanyHaveCreateEmployeeToken(companyEmail)) {
                 SQLQueryDelete.deleteOldCompanyCreateEmployeeToken(companyEmail);
             }

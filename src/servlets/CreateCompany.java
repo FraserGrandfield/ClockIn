@@ -24,10 +24,9 @@ public class CreateCompany extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
-        String compEmail = decodedAuth.substring(0, decodedAuth.indexOf('|'));
-        String compPassword = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
+        String compPassword = new String(Base64.getDecoder().decode(encodedAuth));
         try {
+            String compEmail = request.getParameter("email");
             if (SQLQuerySelect.doesCompanyEmailExist(compEmail)) {
                 //402: company already exists
                 response.sendError(402);

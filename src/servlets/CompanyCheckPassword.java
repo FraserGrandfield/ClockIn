@@ -6,6 +6,7 @@ import database.SQLQuerySelect;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -22,11 +23,9 @@ public class CompanyCheckPassword extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authHeader = request.getHeader("authorization");
-        String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String companyEmail = new String(Base64.getDecoder().decode(encodedAuth));
 
         try {
+            String companyEmail = request.getParameter("companyEmail");
             if (SQLQuerySelect.doesCompanyEmailExist(companyEmail)) {
                 String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyEmail);
 
@@ -36,7 +35,8 @@ public class CompanyCheckPassword extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-
+                HttpSession session = request.getSession();
+                session.setAttribute("email", companyEmail);
                 response.sendError(HttpServletResponse.SC_OK);
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED);

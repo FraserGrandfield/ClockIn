@@ -9,8 +9,6 @@ public class SQLQuery {
     protected static String tableCreateEmployeeToken = "createemployeetoken";
     protected static String tableEmployees = "employees";
     protected static String tableTimeStamps = "timestamps";
-    protected static String tableToken = "token";
-    protected static String tableTokenCompany = "tokencompany";
     //Table Company
     protected static String companyEmailPK = "companyEmail";
     protected static String companyName = "companyName";
@@ -31,12 +29,4 @@ public class SQLQuery {
     protected static String timeStampEmployeeEmailFK = "email";
     protected static String clockIn = "clockIn";
     protected static String clockOut = "clockOut";
-    //Table token
-    protected static String tokenEmployeeEmailPKFK = "email";
-    protected static String employeeToken = "token";
-    protected static String employeeTokenTimestamp = "timestamp";
-    //Table tokencompany
-    protected static String tokenCompanyEmailPKFK = "companyEmail";
-    protected static String companyToken = "token";
-    protected static String companyTimeStamp = "timestamp";
 }

@@ -15,16 +15,6 @@
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>CreateEmployeeToken</servlet-name>
-        <servlet-class>servlets.CreateEmployeeToken</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>CreateEmployeeToken</servlet-name>
-        <url-pattern>/createemployeetoken/*</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
         <servlet-name>CreateEmployee</servlet-name>
         <servlet-class>servlets.CreateEmployee</servlet-class>
     </servlet>
@@ -32,16 +22,6 @@
     <servlet-mapping>
         <servlet-name>CreateEmployee</servlet-name>
         <url-pattern>/createemployee/*</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>CreateCompanyToken</servlet-name>
-        <servlet-class>servlets.CreateCompanyToken</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>CreateCompanyToken</servlet-name>
-        <url-pattern>/createcompanytoken/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -153,5 +133,19 @@
         <servlet-name>ChangeCompanyPassword</servlet-name>
         <url-pattern>/changecompanypassword/*</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>filters.AuthenticationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <session-config>
+        <session-timeout>20</session-timeout>
+    </session-config>
 
 </web-app>

@@ -23,18 +23,6 @@ public class SQLQueryInsert extends SQLQuery {
     }
 
     /**
-     * Add an employee token field to the database.
-     * @param email employees Id.
-     * @param token the token.
-     * @param timeStamp current timestamp.
-     * @throws SQLException
-     */
-    public synchronized static void addEmployeeToken(String email, String token, String timeStamp) throws SQLException {
-        Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableToken + " VALUES ('%s', '%s', '%s');", email, token, timeStamp));
-    }
-
-    /**
      * Add an employee to the employee table.
      * @param email employees email.
      * @param firstName employees first name.
@@ -46,18 +34,6 @@ public class SQLQueryInsert extends SQLQuery {
     public synchronized static void addEmployee(String email, String firstName, String secondName, String password, String companyEmail, String hourlyPay) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         statement.execute(String.format("INSERT INTO " + databaseName + "." + tableEmployees + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s');", email, firstName, secondName, password, companyEmail, hourlyPay));
-    }
-
-    /**
-     * Adds a company token.
-     * @param companyEmail company name.
-     * @param token token.
-     * @param timeStamp timestamp.
-     * @throws SQLException
-     */
-    public synchronized static void addCompanyToken(String companyEmail, String token, String timeStamp) throws SQLException {
-        Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableTokenCompany + " VALUES ('%s','%s', '%s');", companyEmail, token, timeStamp));
     }
 
     /**

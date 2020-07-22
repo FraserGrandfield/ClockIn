@@ -24,15 +24,13 @@ public class CreateEmployee extends HttpServlet {
 
         String authHeader = request.getHeader("authorization");
         String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String decodedAuth = new String(Base64.getDecoder().decode(encodedAuth));
-        String token = decodedAuth.substring(0, decodedAuth.indexOf('|'));
-        String password = decodedAuth.substring(decodedAuth.indexOf('|') + 1);
+        String password = new String(Base64.getDecoder().decode(encodedAuth));
 
         String firstName = request.getParameter("firstName");
         String secondName = request.getParameter("secondName");
         String email = request.getParameter("email");
         String pay = request.getParameter("pay");
-
+        String token = request.getParameter("token");
         try {
 
             if (!SQLQuerySelect.doesEmployeeHaveCreateAccountValidToken(token)) {
