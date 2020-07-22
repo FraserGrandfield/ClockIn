@@ -3,6 +3,7 @@ package servlets;
 import core.BCrypt;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,19 +23,33 @@ public class CreateCompany extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authHeader = request.getHeader("authorization");
-        String encodedAuth = authHeader.substring(authHeader.indexOf(' ') + 1);
-        String compPassword = new String(Base64.getDecoder().decode(encodedAuth));
+
         try {
+            String name = request.getParameter("companyName");
+            String firstPassword = new String(Base64.getDecoder().decode(request.getParameter("firstPassword")));
+            String secondPassword = new String(Base64.getDecoder().decode(request.getParameter("secondPassword")));
             String compEmail = request.getParameter("email");
-            if (SQLQuerySelect.doesCompanyEmailExist(compEmail)) {
+
+            EmailValidator validator = EmailValidator.getInstance();
+            if (!(validator.isValid(compEmail))) {
+                //482: Invalid email
+                response.sendError(482);
+                return;
+            } else if (!firstPassword.equals(secondPassword)) {
+                //480: Passwords don't match
+                response.sendError(480);
+                return;
+            } else if (firstPassword.length() < 6) {
+                //480: Password is too short.
+                response.sendError(481);
+                return;
+            } else if (SQLQuerySelect.doesCompanyEmailExist(compEmail)) {
                 //402: company already exists
                 response.sendError(402);
                 return;
             }
-            String name = request.getParameter("companyName");
 
-            String hashedPassword = BCrypt.hashpw(compPassword, BCrypt.gensalt(12));
+            String hashedPassword = BCrypt.hashpw(firstPassword, BCrypt.gensalt(12));
 
             SQLQueryInsert.addCompany(compEmail, name, hashedPassword);
             response.sendError(HttpServletResponse.SC_OK);
