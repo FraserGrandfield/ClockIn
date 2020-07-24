@@ -35,7 +35,13 @@ public class CompanyCheckPassword extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-                HttpSession session = request.getSession();
+                HttpSession session = request.getSession(false);
+                if(session != null) {
+                    session.invalidate();
+                    HttpSession newSession = request.getSession();
+                } else {
+                    HttpSession newSession = request.getSession();
+                }
                 session.setAttribute("email", companyEmail);
                 response.sendError(HttpServletResponse.SC_OK);
             } else {
