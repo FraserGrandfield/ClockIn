@@ -31,12 +31,14 @@ public class AuthenticationFilter implements Filter{
         HttpSession session = request.getSession(false);
 
         //TODO Change to actual login page name and check for create employee as well
-        if(session == null && !(uri.endsWith("createcompany") || uri.endsWith("createemployee") || uri.endsWith("employeecheckpassword") || uri.endsWith("companycheckpassword"))){
+        //Have array of the urls and just check if it
+        if(session == null && !(uri.endsWith("createcompany") || uri.endsWith("createemployee") || uri.endsWith("employeecheckpassword") || uri.endsWith("companycheckpassword") || uri.endsWith("index.jsp"))){
             System.out.println("Unauthorized access request");
-            //response.sendRedirect("login.html");
+            response.sendRedirect("index.jsp");
         }else{
             chain.doFilter(request, response);
         }
+
     }
 
     /**

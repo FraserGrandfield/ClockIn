@@ -1,17 +1,36 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fraser
-  Date: 16/06/2020
-  Time: 20:59
-  To change this template use File | Settings | File Templates.
---%>
+<!DOCTYPE html>
 <%@page session="false"%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form name="CreateEmployeeForm" method="post" action="createemployee">
+        First name: <input type="text" name="firstName"/><br/>
+        Second name: <input type="text" name="secondName"/><br/>
+        Email: <input type="text" name="email"/><br/>
+        Password: <input type="text" name="firstPassword"/><br/>
+        Confirm Password: <input type="text" name="secondPassword"/><br/>
+        Pay: <input type="text" name="pay"/><br/>
+        Token: <input type="text" name="token"/><br/>
+        <input type="submit" value="create Account" />
+    </form><br/>
+
+    <form name="CreateCompanyForm" method="post" action="createcompany">
+        Company name: <input type="text" name="companyName"/><br/>
+        Password: <input type="text" name="firstPassword"/><br/>
+        Confirm password: <input type="text" name="secondPassword"/><br/>
+        Email: <input type="text" name="email"/><br/>
+        <input type="submit" value="create Account" />
+    </form><br/>
+
+    <form name="EmployeeLogin" method="post" action="employeecheckpassword">
+        Email: <input type="text" name="email"/><br/>
+        Password: <input type="text" name="password"/><br/>
+        <input type="submit" value="Login" />
+    </form><br/>
+
+
+</body>
 </html>

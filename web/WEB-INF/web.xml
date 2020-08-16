@@ -45,16 +45,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>CreateEmployeeCreateToken</servlet-name>
-        <servlet-class>servlets.CreateEmployeeCreateToken</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>CreateEmployeeCreateToken</servlet-name>
-        <url-pattern>/createemployeecreatetoken/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>ClockIn</servlet-name>
         <servlet-class>servlets.ClockIn</servlet-class>
     </servlet>
@@ -147,5 +137,9 @@
     <session-config>
         <session-timeout>20</session-timeout>
     </session-config>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>

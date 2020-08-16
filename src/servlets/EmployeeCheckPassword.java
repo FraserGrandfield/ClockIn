@@ -3,15 +3,13 @@ package servlets;
 import core.BCrypt;
 import database.SQLQuerySelect;
 
-import javax.jms.Session;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Base64;
-import java.util.UUID;
 
 /**
  * Get employee encrypted password.
@@ -23,6 +21,7 @@ public class EmployeeCheckPassword extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter writer = response.getWriter();
 
         try {
             String email = request.getParameter("email");
@@ -31,7 +30,7 @@ public class EmployeeCheckPassword extends HttpServlet {
                 String password = request.getParameter("password");
 
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    WriteError("Error: Email or password is incorrect.", writer);
                     return;
                 }
 
@@ -39,24 +38,27 @@ public class EmployeeCheckPassword extends HttpServlet {
                 if(session != null) {
                     session.invalidate();
                     HttpSession newSession = request.getSession();
+                    newSession.setAttribute("email", email);
                 } else {
                     HttpSession newSession = request.getSession();
+                    newSession.setAttribute("email", email);
                 }
-                session.setAttribute("email", email);
-                response.sendError(HttpServletResponse.SC_OK);
+                response.sendRedirect("home.jsp");
             } else {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                WriteError("Error: Email or password is incorrect.", writer);
                 return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            WriteError("Error: Currently having issues communicating to the server.", writer);
             return;
         }
     }
 
-    private String generateToken() {
-        return UUID.randomUUID().toString();
+    private static void WriteError(String error, PrintWriter writer) {
+        writer.println("<script type=\"text/javascript\">");
+        writer.println("alert('" + error + "');");
+        writer.println("location='index.jsp';");
+        writer.println("</script>");
     }
-
 }

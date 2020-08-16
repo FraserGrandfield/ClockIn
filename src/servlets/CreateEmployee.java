@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Base64;
 import org.apache.commons.validator.routines.*;
@@ -22,36 +23,33 @@ public class CreateEmployee extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter writer = response.getWriter();
 
         String firstName = request.getParameter("firstName");
         String secondName = request.getParameter("secondName");
         String email = request.getParameter("email");
-        String firstPassword = new String(Base64.getDecoder().decode(request.getParameter("firstPassword")));
-        String secondPassword = new String(Base64.getDecoder().decode(request.getParameter("secondPassword")));
+        String firstPassword = request.getParameter("firstPassword");
+        String secondPassword = request.getParameter("secondPassword");
         String pay = request.getParameter("pay");
         String token = request.getParameter("token");
+        System.out.println(firstPassword);
         try {
 
             EmailValidator validator = EmailValidator.getInstance();
             if (!(validator.isValid(email))) {
-                //482: Invalid email
-                response.sendError(482);
+                WriteError("Error: Email is invalid.", writer);
                 return;
             } else if (!firstPassword.equals(secondPassword)) {
-                //480: Passwords don't match
-                response.sendError(480);
+                WriteError("Error: Passwords do not match.", writer);
                 return;
             } else if (firstPassword.length() < 6){
-                //480: Password is too short.
-                response.sendError(481);
+                WriteError("Error: Password is too short.", writer);
                 return;
             } else if (!SQLQuerySelect.doesEmployeeHaveCreateAccountValidToken(token)) {
-                //401: Client doesn't have a valid token
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                WriteError("Error: Incorrect company token.", writer);
                 return;
             } else if (SQLQuerySelect.isEmailInDatabase(email)) {
-                //402: Employee email is already with the company
-                response.sendError(402);
+                WriteError("Error: Email is already registered with that company.", writer);
                 return;
             }
 
@@ -59,11 +57,18 @@ public class CreateEmployee extends HttpServlet {
             String hashedPassword = BCrypt.hashpw(firstPassword, BCrypt.gensalt(12));
 
             SQLQueryInsert.addEmployee(email, firstName, secondName, hashedPassword, companyEmail, pay);
-            response.sendError(HttpServletResponse.SC_OK);
+            response.sendRedirect("index.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            WriteError("Error: Currently having issues communicating to the server.", writer);
             return;
         }
+    }
+
+    private static void WriteError(String error, PrintWriter writer) {
+        writer.println("<script type=\"text/javascript\">");
+        writer.println("alert('" + error + "');");
+        writer.println("location='index.jsp';");
+        writer.println("</script>");
     }
 }
