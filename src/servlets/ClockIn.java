@@ -2,6 +2,7 @@ package servlets;
 
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
+import database.SQLQueryUpdate;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,17 +24,16 @@ public class ClockIn extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String clockInTS = request.getParameter("timestamp");
+        String timeStamp = request.getParameter("timestamp");
 
         try {
             HttpSession session = request.getSession(false);
             String email = (String) session.getAttribute("email");
 
-            String timeStampId = email + clockInTS;
+            String timeStampId = email + timeStamp;
 
             if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {
-                //Error: 460 There is already a clock in time needing a clock out pair
-                response.sendError(460);
+                SQLQueryUpdate.updateClockOutTimeStamp(email, timeStamp);
                 return;
             }
 
@@ -43,7 +43,7 @@ public class ClockIn extends HttpServlet {
                 return;
             }
 
-            SQLQueryInsert.addClockInTimeStamp(timeStampId, email, clockInTS);
+            SQLQueryInsert.addClockInTimeStamp(timeStampId, email, timeStamp);
             response.sendError(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();

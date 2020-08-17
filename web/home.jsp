@@ -71,7 +71,8 @@
 
 <div class="container-fluid text-center bg-1">
     <div>
-        <a href="#" role="button" class="btn btn2"><img src="Images/easyshift_icon_Logo.png" width="150px" height=150px"></a>
+        <!--have a onclick and call a function with the form-->
+        <a role="button" class="btn btn2" onclick="clockIn()"><img src="Images/easyshift_icon_Logo.png" width="150px" height=150px"></a>
         <h2>Clock In / Out</h2>
     </div>
 </div>
@@ -81,5 +82,21 @@
 </footer>
 
 </body>
+
 </html>
+
+<script>
+    function clockIn() {
+        var httpRequest = new XMLHttpRequest();
+
+        var today = new Date();
+        var dateTime = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + " ";
+        dateTime += today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();-
+
+        httpRequest.open("POST", "clockin", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send("timestamp=" + dateTime);
+    }
+</script>
+
 
