@@ -35,7 +35,6 @@ public class ClockIn extends HttpServlet {
             String timeStampId = email + timeStamp;
 
             if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {
-                //TODO check clock out cant be behind clock in
                 String timestampOut = request.getParameter("timestampOut");
                 LocalDateTime localDateTime = LocalDateTime.parse(timeStamp).plusDays(1);
                 LocalDateTime localDateTimeOut = LocalDateTime.parse(timestampOut).plusDays(1);
