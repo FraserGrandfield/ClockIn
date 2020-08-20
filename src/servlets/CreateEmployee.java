@@ -32,7 +32,6 @@ public class CreateEmployee extends HttpServlet {
         String secondPassword = request.getParameter("secondPassword");
         String pay = request.getParameter("pay");
         String token = request.getParameter("token");
-        System.out.println(firstPassword);
         try {
 
             EmailValidator validator = EmailValidator.getInstance();

@@ -55,13 +55,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ClockOut</servlet-name>
-        <servlet-class>servlets.ClockOut</servlet-class>
+        <servlet-name>ClockInOrOut</servlet-name>
+        <servlet-class>servlets.ClockInOrOut</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ClockOut</servlet-name>
-        <url-pattern>/clockout/*</url-pattern>
+        <servlet-name>ClockInOrOut</servlet-name>
+        <url-pattern>/clockinorout/*</url-pattern>
     </servlet-mapping>
     
     <servlet>

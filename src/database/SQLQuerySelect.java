@@ -196,4 +196,17 @@ public class SQLQuerySelect extends SQLQuery{
         }
         return (temp.equals(email));
     }
+
+    public synchronized static String getLatestClockIn(String email) throws SQLException {
+        Statement statement= DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", email));
+
+        String temp = "";
+        while (resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        String[] tempSplit = temp.split(" ");
+        temp = tempSplit[0] + "T" + tempSplit[1];
+        return (temp);
+    }
 }

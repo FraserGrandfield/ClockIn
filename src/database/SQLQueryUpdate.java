@@ -17,9 +17,10 @@ public class SQLQueryUpdate extends SQLQuery{
      * @param timeStamp timestamp.
      * @throws SQLException
      */
-    public synchronized static void updateClockOutTimeStamp(String email, String timeStamp) throws SQLException {
+    public synchronized static void updateClockOutTimeStamp(String email, String timeStamp, String timestampOut) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockOut + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", timeStamp, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockIn + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", timeStamp, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockOut + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", timestampOut, email));
     }
 
     /**

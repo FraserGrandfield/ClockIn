@@ -71,9 +71,18 @@
 
 <div class="container-fluid text-center bg-1">
     <div>
-        <!--have a onclick and call a function with the form-->
-        <a role="button" class="btn btn2" onclick="clockIn()"><img src="Images/easyshift_icon_Logo.png" width="150px" height=150px"></a>
+        <a role="button" class="btn btn2" onclick="checkClock()"><img src="Images/easyshift_icon_Logo.png" width="150px" height=150px"></a>
         <h2>Clock In / Out</h2>
+        <div id="ClockedIn">
+            <div id="text">Clocked in</div>
+        </div>
+        <div id="clockedOut">
+            <h2>Clock in date and time.</h2>
+            <input type="datetime-local" id="dateTimeClockIn" value="2018-06-12T19:30" min="2018-06-07T00:00">
+            <h2>Clock out date and time.</h2>
+            <input type="datetime-local" id="dateTimeClockOut" value="2018-06-12T19:30" min="2018-06-07T00:00">
+            <input type="submit" value="Clock Out" onclick="clockOut()">
+        </div>
     </div>
 </div>
 <!-- Footer -->
@@ -82,21 +91,60 @@
 </footer>
 
 </body>
-
+-
 </html>
 
 <script>
+    function checkClock() {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 271 && this.readyState === 4) {
+                clockIn();
+            } else if (this.status === 270 && this.readyState === 4){
+                document.getElementById("clockedOut").style.display = "block";
+                document.getElementById("dateTimeClockIn").value = this.responseText;
+            }
+        };
+        httpRequest.open("POST", "clockinorout", true);
+        httpRequest.send();
+    }
+    
     function clockIn() {
         var httpRequest = new XMLHttpRequest();
 
         var today = new Date();
         var dateTime = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + " ";
-        dateTime += today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();-
+        dateTime += today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 273 && this.readyState === 4) {
+                document.getElementById("ClockedIn").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("ClockedIn").style.display = "none"
+                }, 3000);
+            }
+        };
 
         httpRequest.open("POST", "clockin", true);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         httpRequest.send("timestamp=" + dateTime);
     }
+    
+    function clockOut() {
+        var timestampIn = document.getElementById("dateTimeClockIn").value;
+        var timestampOut = document.getElementById("dateTimeClockOut").value;
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 272 && this.readyState === 4) {
+                document.getElementById("clockedOut").style.display = "none";
+            }
+        };
+        var out = "timestamp=" + timestampIn + "&timestampOut=" + timestampOut;
+
+        httpRequest.open("POST", "clockin", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send(out);
+    }
+
 </script>
 
 
