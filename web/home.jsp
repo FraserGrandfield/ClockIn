@@ -80,6 +80,9 @@
         <div id="ClockedIn">
             <div id="text">Clocked in</div>
         </div>
+        <div id="clockOutError" style="display: none">
+            <div id="textClockOutError">Error clocking out: clock out cannot be before clock in.</div>
+        </div>
         <div id="clockedOut">
             <h2>Clock in date and time.</h2>
             <input type="datetime-local" id="dateTimeClockIn" value="2018-06-12T19:30" min="2018-06-07T00:00">
@@ -160,6 +163,11 @@
         httpRequest.onreadystatechange = function () {
             if (this.status === 272 && this.readyState === 4) {
                 document.getElementById("clockedOut").style.display = "none";
+            } else if (this.status === 274 && this.readyState === 4) {
+                document.getElementById("clockOutError").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("clockOutError").style.display = "none"
+                }, 3000);
             }
         };
         var out = "timestamp=" + timestampIn + "&timestampOut=" + timestampOut;

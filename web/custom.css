@@ -176,12 +176,25 @@ p {font-size: 16px;}
     color: white;
 }
 
+#textClockOutError {
+    position: relative;
+    font-size: 20px;
+    color: white;
+}
+
 #dateTimeClockOut {
     margin: .4rem 0;
 }
 
 #dateTimeClockIn {
     margin: .4rem 0;
+}
+
+#clockOutError {
+    position: relative;
+    display: none;
+    width: 400px;
+    height: 300px;
 }
 
 /*Clock in/out btn*/

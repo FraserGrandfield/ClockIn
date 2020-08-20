@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -33,10 +35,18 @@ public class ClockIn extends HttpServlet {
             String timeStampId = email + timeStamp;
 
             if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {
+                //TODO check clock out cant be behind clock in
                 String timestampOut = request.getParameter("timestampOut");
-                SQLQueryUpdate.updateClockOutTimeStamp(email, timeStamp, timestampOut);
-                response.setStatus(272);
-                return;
+                LocalDateTime localDateTime = LocalDateTime.parse(timeStamp).plusDays(1);
+                LocalDateTime localDateTimeOut = LocalDateTime.parse(timestampOut).plusDays(1);
+                if (localDateTime.isAfter(localDateTimeOut)) {
+                    response.setStatus(274);
+                    return;
+                } else {
+                    SQLQueryUpdate.updateClockOutTimeStamp(email, timeStamp, timestampOut);
+                    response.setStatus(272);
+                    return;
+                }
             }
 
             if (SQLQuerySelect.doesTimeStampIdExist(timeStampId)) {

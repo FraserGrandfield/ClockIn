@@ -124,6 +124,16 @@
         <url-pattern>/deleteclockin/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetShiftByDay</servlet-name>
+        <servlet-class>servlets.GetShiftByDay</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetShiftByDay</servlet-name>
+        <url-pattern>/getshiftbyday/*</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>

@@ -1,10 +1,13 @@
 package database;
 
+import servlets.ClockIn;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  * SQL query class for selecting from the database.
@@ -208,5 +211,21 @@ public class SQLQuerySelect extends SQLQuery{
         String[] tempSplit = temp.split(" ");
         temp = tempSplit[0] + "T" + tempSplit[1];
         return (temp);
+    }
+
+    public synchronized static ArrayList<ArrayList<String>> getShiftByDay(String email, String date, String date2) throws SQLException {
+        Statement statement= DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + ", " + clockOut + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + clockIn + " >= '%s' AND " + clockIn + " <= '%s' AND " + timeStampEmployeeEmailFK + " = '%s';", date, date2, email));
+
+        ArrayList<ArrayList<String>> list = new ArrayList();
+
+        while (resultSet.next()) {
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(resultSet.getString(1));
+            temp.add(resultSet.getString(2));
+            System.out.println(temp + " dsfdsf");
+            list.add(temp);
+        }
+        return list;
     }
 }
