@@ -29,13 +29,13 @@ public class CompanyDeleteEmployee extends HttpServlet {
             String employeeEmail = request.getParameter("email");
             if (SQLQuerySelect.isEmployeeWithCompany(employeeEmail, companyEmail)) {
                 SQLQueryDelete.deleteEmployee(employeeEmail);
-                response.sendError(HttpServletResponse.SC_OK);
+                response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 //Error 403: Employee isn't with the company.
-                response.sendError(403);
+                response.setStatus(403);
                 return;
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;

@@ -43,6 +43,10 @@
       <li class="nav-item">
         <a class="nav-link" href="Contact.jsp" style="font-size: 15px">Contact</a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" onclick="LogOut()" href="index.jsp" style="font-size: 15px">Log Out</a>
+      </li>
     </ul>
 
   </div>
@@ -162,3 +166,11 @@
 
 </body>
 </html>
+
+<script>
+  function LogOut() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open("POST", "logout", true);
+    httpRequest.send();
+  }
+</script>

@@ -31,4 +31,9 @@ public class SQLQueryDelete extends SQLQuery {
         statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s';", email));
         statement.execute(String.format("DELETE FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
     }
+
+    public synchronized static void deleteClockIn(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " + employeeEmailPK + " = '%s' AND "+ clockOut + " IS NULL;", email));
+    }
 }

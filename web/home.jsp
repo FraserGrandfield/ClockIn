@@ -41,6 +41,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="Contact.jsp" style="font-size: 15px">Contact</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" onclick="LogOut()" href="index.jsp" style="font-size: 15px">Log Out</a>
+            </li>
         </ul>
 
     </div>
@@ -81,7 +85,9 @@
             <input type="datetime-local" id="dateTimeClockIn" value="2018-06-12T19:30" min="2018-06-07T00:00">
             <h2>Clock out date and time.</h2>
             <input type="datetime-local" id="dateTimeClockOut" value="2018-06-12T19:30" min="2018-06-07T00:00">
-            <input type="submit" value="Clock Out" onclick="clockOut()">
+            <input type="button" value="Clock Out" onclick="clockOut()">
+            <input type="button" value="Cancel" onclick="document.getElementById('clockedOut').style.display = 'none'">
+            <input type="button" value="Delete current clock in" onclick="DeleteClockIn()">
         </div>
     </div>
 </div>
@@ -103,6 +109,24 @@
             } else if (this.status === 270 && this.readyState === 4){
                 document.getElementById("clockedOut").style.display = "block";
                 document.getElementById("dateTimeClockIn").value = this.responseText;
+
+                var today = new Date();
+                var month = today.getMonth()+1;
+                var date = today.getDate();
+                var hours = today.getHours();
+                var min = today.getMinutes();
+                var sec = today.getSeconds();
+                if(month<10){month = '0'+month}
+                if(date<10){date = '0'+date}
+                if(hours<10){hours = '0'+hours}
+                if(min<10){min = '0'+min}
+                if(sec<10){sec = '0'+sec}
+
+                var dateTime = today.getFullYear()+'-'+ month +'-'+ date + "T";
+                dateTime += hours + ":" + min + ":" + sec;
+                console.log(Date.now());
+                document.getElementById("dateTimeClockOut").value = dateTime;
+
             }
         };
         httpRequest.open("POST", "clockinorout", true);
@@ -145,6 +169,21 @@
         httpRequest.send(out);
     }
 
+    function LogOut() {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open("POST", "logout", true);
+        httpRequest.send();
+    }
+    
+    function DeleteClockIn() {
+        var httpRequest = new XMLHttpRequest();
+        document.getElementById("clockedOut").style.display = "none";
+
+        httpRequest.open("POST", "deleteclockin", true);
+        httpRequest.send();
+    }
+
 </script>
+
 
 

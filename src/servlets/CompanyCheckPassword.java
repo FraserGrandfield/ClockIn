@@ -32,20 +32,18 @@ public class CompanyCheckPassword extends HttpServlet {
                 String password = request.getParameter("password");
 
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
                 HttpSession session = request.getSession(false);
                 if(session != null) {
                     session.invalidate();
-                    HttpSession newSession = request.getSession();
-                } else {
-                    HttpSession newSession = request.getSession();
                 }
-                session.setAttribute("email", companyEmail);
-                response.sendError(HttpServletResponse.SC_OK);
+                HttpSession newSession = request.getSession();
+                newSession.setAttribute("email", companyEmail);
+                response.setStatus(HttpServletResponse.SC_OK);
             } else {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -31,8 +31,8 @@ public class UpdateEmployeeDetails extends HttpServlet {
                 String newPay = request.getParameter("pay");
 
                 SQLQueryUpdate.updateEmployeeDetails(oldEmail, newEmail, newFName, newSName, newPay);
-                response.sendError(HttpServletResponse.SC_OK);
-        } catch (SQLException | IOException e) {
+                response.setStatus(HttpServletResponse.SC_OK);
+        } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;

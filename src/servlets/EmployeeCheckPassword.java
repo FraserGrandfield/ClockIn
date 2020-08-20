@@ -37,12 +37,9 @@ public class EmployeeCheckPassword extends HttpServlet {
                 HttpSession session = request.getSession(false);
                 if(session != null) {
                     session.invalidate();
-                    HttpSession newSession = request.getSession();
-                    newSession.setAttribute("email", email);
-                } else {
-                    HttpSession newSession = request.getSession();
-                    newSession.setAttribute("email", email);
                 }
+                HttpSession newSession = request.getSession();
+                newSession.setAttribute("email", email);
                 response.sendRedirect("home.jsp");
             } else {
                 WriteError("Error: Email or password is incorrect.", writer);

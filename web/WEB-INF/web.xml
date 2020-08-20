@@ -85,23 +85,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>LogOutEmployee</servlet-name>
-        <servlet-class>servlets.LogOutEmployee</servlet-class>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>servlets.LogOut</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>LogOutEmployee</servlet-name>
-        <url-pattern>/logoutemployee/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LogOutCompany</servlet-name>
-        <servlet-class>servlets.LogOutCompany</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>LogOutCompany</servlet-name>
-        <url-pattern>/logoutcompany/*</url-pattern>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/logout/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -122,6 +112,16 @@
     <servlet-mapping>
         <servlet-name>ChangeCompanyPassword</servlet-name>
         <url-pattern>/changecompanypassword/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteClockIn</servlet-name>
+        <servlet-class>servlets.DeleteClockIn</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeleteClockIn</servlet-name>
+        <url-pattern>/deleteclockin/*</url-pattern>
     </servlet-mapping>
 
     <filter>

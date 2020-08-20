@@ -3,6 +3,8 @@ package servlets;
 import database.SQLQueryDelete;
 import database.SQLQuerySelect;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,14 +19,13 @@ import java.util.Base64;
  * @version 1.0
  * @since 04/07/2020
  */
-public class LogOutEmployee extends HttpServlet {
+public class LogOut extends HttpServlet {
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         HttpSession session = request.getSession(false);
         session.invalidate();
-        response.sendError(HttpServletResponse.SC_OK);
-
     }
+
 }

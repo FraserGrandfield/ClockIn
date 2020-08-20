@@ -27,8 +27,8 @@ public class ChangeEmployeePassword extends HttpServlet {
 
             String newPassword = request.getParameter("newPassword");
             SQLQueryUpdate.updateEmployeePassword(email, newPassword);
-            response.sendError(HttpServletResponse.SC_OK);
-        } catch (SQLException | IOException e) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }

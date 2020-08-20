@@ -35,18 +35,18 @@ public class ClockIn extends HttpServlet {
             if (SQLQuerySelect.isThereClockOutTSOfNull(email)) {
                 String timestampOut = request.getParameter("timestampOut");
                 SQLQueryUpdate.updateClockOutTimeStamp(email, timeStamp, timestampOut);
-                response.sendError(272);
+                response.setStatus(272);
                 return;
             }
 
             if (SQLQuerySelect.doesTimeStampIdExist(timeStampId)) {
                 //Error: 407 time stamp ID already exists
-                response.sendError(407);
+                response.setStatus(407);
                 return;
             }
 
             SQLQueryInsert.addClockInTimeStamp(timeStampId, email, timeStamp);
-            response.sendError(273);
+            response.setStatus(273);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
