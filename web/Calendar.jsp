@@ -65,8 +65,11 @@
 <div class="container-fluid text-center bg-4">
 
     <!-- Lager 4 linjer med text hvor 3 av tekstlinjene er rammet inne ved hjelp av class="box" -->
-
-    <input type="date" id="date">
+    <h3>First Date</h3>
+    <input type="date" id="firstDate">
+    <br>
+    <h3>Second Date</h3>
+    <input type="date" id="secondDate">
     <br>
     <a role="button" class="btn btn1" onclick="getDate()">Get Shift</a>
     <br>
@@ -100,16 +103,18 @@
 
     function getDate() {
         var httpRequest = new XMLHttpRequest();
-        var date = document.getElementById("date").value;
+        var firstDate = document.getElementById("firstDate").value;
+        var secondDate = document.getElementById("secondDate").value;
+
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
                 document.getElementById("shiftText").innerText = this.responseText;
             }
         };
 
-        httpRequest.open("POST", "getshiftbyday", true);
+        httpRequest.open("POST", "getshifts", true);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        httpRequest.send("date=" + date);
+        httpRequest.send("firstDate=" + firstDate + "&secondDate=" + secondDate);
     }
 
 </script>

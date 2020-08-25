@@ -190,7 +190,7 @@ public class SQLQuerySelect extends SQLQuery{
      * @throws SQLException
      */
     public synchronized static boolean isEmployeeWithCompany(String email, String companyEmail) throws SQLException {
-        Statement statement= DataBase.getConnection().createStatement();
+        Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeEmailPK + " FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeCompanyEmail + " = '%s' AND " + employeeEmailPK + " = '%s';", companyEmail, email));
 
         String temp = "";
@@ -201,7 +201,7 @@ public class SQLQuerySelect extends SQLQuery{
     }
 
     public synchronized static String getLatestClockIn(String email) throws SQLException {
-        Statement statement= DataBase.getConnection().createStatement();
+        Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", email));
 
         String temp = "";
@@ -213,9 +213,9 @@ public class SQLQuerySelect extends SQLQuery{
         return (temp);
     }
 
-    public synchronized static ArrayList<ArrayList<String>> getShiftByDay(String email, String date, String date2) throws SQLException {
-        Statement statement= DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + ", " + clockOut + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + clockIn + " >= '%s' AND " + clockIn + " <= '%s' AND " + timeStampEmployeeEmailFK + " = '%s';", date, date2, email));
+    public synchronized static ArrayList<ArrayList<String>> getShifts(String email, String date, String date2) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + ", " + clockOut + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + clockIn + " >= '%s' AND " + clockIn + " <= '%s' AND " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NOT NULL;", date, date2, email));
 
         ArrayList<ArrayList<String>> list = new ArrayList();
 
@@ -227,5 +227,17 @@ public class SQLQuerySelect extends SQLQuery{
             list.add(temp);
         }
         return list;
+    }
+
+    public synchronized static float getEmployeePay(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeHourlyPay + " FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
+
+        String temp = "";
+
+        while(resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return Float.parseFloat(temp);
     }
 }

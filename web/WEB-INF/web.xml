@@ -125,13 +125,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>GetShiftByDay</servlet-name>
-        <servlet-class>servlets.GetShiftByDay</servlet-class>
+        <servlet-name>GetShifts</servlet-name>
+        <servlet-class>servlets.GetShifts</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>GetShiftByDay</servlet-name>
-        <url-pattern>/getshiftbyday/*</url-pattern>
+        <servlet-name>GetShifts</servlet-name>
+        <url-pattern>/getshifts/*</url-pattern>
     </servlet-mapping>
 
     <filter>
