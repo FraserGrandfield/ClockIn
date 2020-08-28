@@ -135,6 +135,7 @@ public class SQLQuerySelect extends SQLQuery{
      * @throws SQLException
      */
     public synchronized static boolean isEmailInDatabase(String email) throws SQLException {
+        System.out.println(email);
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeEmailPK + " FROM " + databaseName
                 + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
