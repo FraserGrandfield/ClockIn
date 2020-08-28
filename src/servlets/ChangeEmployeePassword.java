@@ -1,6 +1,5 @@
 package servlets;
 
-import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
 import javax.servlet.http.HttpServlet;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Base64;
 
 /**
  * Change employees password.
@@ -24,7 +22,6 @@ public class ChangeEmployeePassword extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             String email = (String) session.getAttribute("email");
-
             String newPassword = request.getParameter("newPassword");
             SQLQueryUpdate.updateEmployeePassword(email, newPassword);
             response.setStatus(HttpServletResponse.SC_OK);

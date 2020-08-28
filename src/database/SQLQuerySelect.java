@@ -25,9 +25,9 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean doesCompanyEmailExist(String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + companyEmailPK + " FROM " + databaseName + "." + tableCompany + " WHERE " + companyEmailPK + " = '%s';", companyEmail));
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + companyEmailPK + " FROM " + databaseName
+                + "." + tableCompany + " WHERE " + companyEmailPK + " = '%s';", companyEmail));
         String names = "";
-
         while (resultSet.next()) {
             names = resultSet.getString(1);
         }
@@ -42,8 +42,8 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static String getCompanyPassword(String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + companyPassword + " FROM " + databaseName + "." + tableCompany + " WHERE " + companyEmailPK + " = '%s';", companyEmail));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + companyPassword + " FROM " + databaseName
+                + "." + tableCompany + " WHERE " + companyEmailPK + " = '%s';", companyEmail));
         String temp = "";
         while (resultSet.next()) {
             temp = resultSet.getString(1);
@@ -59,8 +59,8 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static String getEmployeePassword(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeePassword + " FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeePassword + " FROM " +
+                databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
         String temp = "";
         while (resultSet.next()) {
             temp = resultSet.getString(1);
@@ -76,8 +76,9 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean doesCompanyHaveCreateEmployeeToken(String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeCompanyEmailPKFK + " FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeCompanyEmailPKFK + " = '%s';", companyEmail));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeCompanyEmailPKFK + " FROM "
+                + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeCompanyEmailPKFK
+                + " = '%s';", companyEmail));
         String tempName = "";
         while (resultSet.next()) {
             tempName = resultSet.getString(1);
@@ -93,8 +94,8 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean doesEmployeeHaveCreateAccountValidToken(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeToken + " = '%s';", token));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM " + databaseName + "." +
+                tableCreateEmployeeToken + " WHERE " + createEmployeeToken + " = '%s';", token));
         String tempToken = "";
         String dataTime = "";
         while (resultSet.next()) {
@@ -104,11 +105,9 @@ public class SQLQuerySelect extends SQLQuery{
         if (!token.equals(tempToken)) {
             return false;
         }
-
         LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime tokenTime = LocalDateTime.parse(dataTime, dateTimeFormatter);
-
         return (tokenTime.isAfter(currentTime));
     }
 
@@ -120,8 +119,8 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static String getCompanyEmailFromCreateEmployeeToken(String token) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeCompanyEmailPKFK + " FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeToken + " = '%s';", token));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeCompanyEmailPKFK + " FROM "
+                + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeToken + " = '%s';", token));
         String compEmail = "";
         while (resultSet.next()) {
             compEmail = resultSet.getString(1);
@@ -137,12 +136,11 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean isEmailInDatabase(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeEmailPK + " FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeEmailPK + " FROM " + databaseName
+                + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
         String temp;
         for(temp = ""; resultSet.next(); temp = resultSet.getString(1)) {
         }
-
         return temp.equals(email);
     }
 
@@ -154,12 +152,11 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean doesTimeStampIdExist(String timeStampId) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + timestampIDPK + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timestampIDPK + " = '%s';", timeStampId));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + timestampIDPK + " FROM " + databaseName +
+                "." + tableTimeStamps + " WHERE " + timestampIDPK + " = '%s';", timeStampId));
         String temp;
         for(temp = ""; resultSet.next(); temp = resultSet.getString(1)) {
         }
-
         return temp.equals(timeStampId);
     }
 
@@ -171,8 +168,9 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean isThereClockOutTSOfNull(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT * FROM " + databaseName + "." +
+                tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut
+                + " IS NULL;", email));
         String tempClockOut = "";
         String tempEmail = "";
         while (resultSet.next()) {
@@ -191,8 +189,9 @@ public class SQLQuerySelect extends SQLQuery{
      */
     public synchronized static boolean isEmployeeWithCompany(String email, String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeEmailPK + " FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeCompanyEmail + " = '%s' AND " + employeeEmailPK + " = '%s';", companyEmail, email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeEmailPK + " FROM " + databaseName
+                + "." + tableEmployees + " WHERE " + employeeCompanyEmail + " = '%s' AND " + employeeEmailPK + " = '%s';",
+                companyEmail, email));
         String temp = "";
         while (resultSet.next()) {
             temp = resultSet.getString(1);
@@ -200,10 +199,17 @@ public class SQLQuerySelect extends SQLQuery{
         return (temp.equals(email));
     }
 
+    /**
+     * Get the latest of the employees clock in.
+     * @param email employee email.
+     * @return String DateTime of the latest clock in.
+     * @throws SQLException
+     */
     public synchronized static String getLatestClockIn(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + " FROM " + databaseName + "." +
+                tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;",
+                email));
         String temp = "";
         while (resultSet.next()) {
             temp = resultSet.getString(1);
@@ -213,12 +219,20 @@ public class SQLQuerySelect extends SQLQuery{
         return (temp);
     }
 
+    /**
+     * Get all of an employees shifts between two dates.
+     * @param email employee email.
+     * @param date first date.
+     * @param date2 second date.
+     * @return 2D arraylist of all the shifts in pairs.
+     * @throws SQLException
+     */
     public synchronized static ArrayList<ArrayList<String>> getShifts(String email, String date, String date2) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + ", " + clockOut + " FROM " + databaseName + "." + tableTimeStamps + " WHERE " + clockIn + " >= '%s' AND " + clockIn + " <= '%s' AND " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NOT NULL;", date, date2, email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + clockIn + ", " + clockOut + " FROM " +
+                databaseName + "." + tableTimeStamps + " WHERE " + clockIn + " >= '%s' AND " + clockIn + " <= '%s' AND "
+                + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NOT NULL;", date, date2, email));
         ArrayList<ArrayList<String>> list = new ArrayList();
-
         while (resultSet.next()) {
             ArrayList<String> temp = new ArrayList<>();
             temp.add(resultSet.getString(1));
@@ -229,12 +243,17 @@ public class SQLQuerySelect extends SQLQuery{
         return list;
     }
 
+    /**
+     * Get the employees pay.
+     * @param email employee email.
+     * @return float employees pay.
+     * @throws SQLException
+     */
     public synchronized static float getEmployeePay(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeHourlyPay + " FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
-
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + employeeHourlyPay + " FROM " +
+                databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
         String temp = "";
-
         while(resultSet.next()) {
             temp = resultSet.getString(1);
         }

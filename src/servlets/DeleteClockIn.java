@@ -16,7 +16,7 @@ public class DeleteClockIn extends HttpServlet {
         String email = (String) session.getAttribute("email");
         try {
             SQLQueryDelete.deleteClockIn(email);
-            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            response.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

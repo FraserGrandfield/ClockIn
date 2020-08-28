@@ -30,13 +30,11 @@ public class CreateCompany extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
-
         try {
             String name = request.getParameter("companyName");
             String firstPassword = new String(Base64.getDecoder().decode(request.getParameter("firstPassword")));
             String secondPassword = new String(Base64.getDecoder().decode(request.getParameter("secondPassword")));
             String compEmail = request.getParameter("email");
-
             EmailValidator validator = EmailValidator.getInstance();
             if (!(validator.isValid(compEmail))) {
                 WriteError("Error: Email is invalid.", writer);
@@ -51,9 +49,7 @@ public class CreateCompany extends HttpServlet {
                 WriteError("Error: Email is already registered.", writer);
                 return;
             }
-
             String hashedPassword = BCrypt.hashpw(firstPassword, BCrypt.gensalt(12));
-
             SQLQueryInsert.addCompany(compEmail, name, hashedPassword);
             generateToken(compEmail);
             response.sendRedirect("index.jsp");

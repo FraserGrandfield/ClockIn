@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Base64;
 
 /**
  * Retrieves companies encrypted password.
@@ -23,14 +21,11 @@ public class CompanyCheckPassword extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         try {
             String companyEmail = request.getParameter("companyEmail");
             if (SQLQuerySelect.doesCompanyEmailExist(companyEmail)) {
                 String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyEmail);
-
                 String password = request.getParameter("password");
-
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;

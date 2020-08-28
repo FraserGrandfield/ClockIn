@@ -22,7 +22,6 @@ public class ChangeCompanyPassword extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             String compEmail = (String) session.getAttribute("email");
-
             String newPassword = request.getParameter("newPassword");
             SQLQueryUpdate.updateCompanyPassword(compEmail, newPassword);
             response.setStatus(HttpServletResponse.SC_OK);

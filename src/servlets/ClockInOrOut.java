@@ -1,10 +1,7 @@
 package servlets;
 
-import database.SQLQueryInsert;
 import database.SQLQuerySelect;
-import database.SQLQueryUpdate;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +10,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ * Servlet to check if the user is clocking in or out.
+ * @author Fraser Grandfield
+ * @version 1.0
+ * @since 28/08/20
+ */
 public class ClockInOrOut extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         try {
             HttpSession session = request.getSession(false);
             String email = (String) session.getAttribute("email");
@@ -32,7 +34,6 @@ public class ClockInOrOut extends HttpServlet {
             } else {
                 response.setStatus(271);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

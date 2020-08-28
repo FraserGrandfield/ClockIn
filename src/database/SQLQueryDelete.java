@@ -18,7 +18,8 @@ public class SQLQueryDelete extends SQLQuery {
      */
     public synchronized static void deleteOldCompanyCreateEmployeeToken(String companyEmail) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeCompanyEmailPKFK + " = '%s';", companyEmail));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableCreateEmployeeToken + " WHERE " +
+                createEmployeeCompanyEmailPKFK + " = '%s';", companyEmail));
     }
 
     /**
@@ -28,12 +29,20 @@ public class SQLQueryDelete extends SQLQuery {
      */
     public synchronized static void deleteEmployee(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " + timeStampEmployeeEmailFK + " = '%s';", email));
-        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " +
+                timeStampEmployeeEmailFK + " = '%s';", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableEmployees + " WHERE " +
+                employeeEmailPK + " = '%s';", email));
     }
 
+    /**
+     * Delete a the latest clock in time.
+     * @param email employee email
+     * @throws SQLException
+     */
     public synchronized static void deleteClockIn(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " + employeeEmailPK + " = '%s' AND "+ clockOut + " IS NULL;", email));
+        statement.execute(String.format("DELETE FROM " + databaseName + "." + tableTimeStamps + " WHERE " +
+                employeeEmailPK + " = '%s' AND "+ clockOut + " IS NULL;", email));
     }
 }

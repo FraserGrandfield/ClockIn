@@ -19,8 +19,12 @@ public class SQLQueryUpdate extends SQLQuery{
      */
     public synchronized static void updateClockOutTimeStamp(String email, String timeStamp, String timestampOut) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockIn + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", timeStamp, email));
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockOut + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;", timestampOut, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockIn +
+                " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;",
+                timeStamp, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + clockOut +
+                " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s' AND " + clockOut + " IS NULL;",
+                timestampOut, email));
     }
 
     /**
@@ -33,8 +37,11 @@ public class SQLQueryUpdate extends SQLQuery{
      */
     public synchronized static void updateEmployeeDetails(String oldEmail, String newEmail, String fName, String sName, String hourlyPay) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " + timeStampEmployeeEmailFK + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s';", newEmail, oldEmail));
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " + employeeEmailPK + " = '%s', " + firstName + " = '%s', " + secondName + " = '%s', " + employeeHourlyPay + " = '%s' WHERE " + employeeEmailPK + " = '%s';", newEmail, fName, sName, hourlyPay, oldEmail));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableTimeStamps + " SET " +
+                timeStampEmployeeEmailFK + " = '%s' WHERE " + timeStampEmployeeEmailFK + " = '%s';", newEmail, oldEmail));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " +
+                employeeEmailPK + " = '%s', " + firstName + " = '%s', " + secondName + " = '%s', " + employeeHourlyPay +
+                " = '%s' WHERE " + employeeEmailPK + " = '%s';", newEmail, fName, sName, hourlyPay, oldEmail));
     }
 
     /**
@@ -45,7 +52,8 @@ public class SQLQueryUpdate extends SQLQuery{
      */
     public synchronized static void updateEmployeePassword(String email, String newPassword) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " + employeePassword + " = '%s' WHERE " + employeeEmailPK + " = '%s';", newPassword, email));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableEmployees + " SET " + employeePassword +
+                " = '%s' WHERE " + employeeEmailPK + " = '%s';", newPassword, email));
     }
 
     /**
@@ -56,6 +64,7 @@ public class SQLQueryUpdate extends SQLQuery{
      */
     public synchronized static void updateCompanyPassword(String companyEmail, String newPassword) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("UPDATE " + databaseName + "." + tableCompany + " SET " + companyPassword + " = '%s' WHERE " + companyEmailPK + " = '%s';", newPassword, companyEmail));
+        statement.execute(String.format("UPDATE " + databaseName + "." + tableCompany + " SET " + companyPassword +
+                " = '%s' WHERE " + companyEmailPK + " = '%s';", newPassword, companyEmail));
     }
 }

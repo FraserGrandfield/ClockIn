@@ -22,18 +22,15 @@ public class EmployeeCheckPassword extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
-
         try {
             String email = request.getParameter("email");
             if (SQLQuerySelect.isEmailInDatabase(email)) {
                 String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
                 String password = request.getParameter("password");
-
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
                     WriteError("Error: Email or password is incorrect.", writer);
                     return;
                 }
-
                 HttpSession session = request.getSession(false);
                 if(session != null) {
                     session.invalidate();

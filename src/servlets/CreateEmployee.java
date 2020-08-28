@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Base64;
 import org.apache.commons.validator.routines.*;
 
 /**
@@ -24,7 +23,6 @@ public class CreateEmployee extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
-
         String firstName = request.getParameter("firstName");
         String secondName = request.getParameter("secondName");
         String email = request.getParameter("email");
@@ -33,7 +31,6 @@ public class CreateEmployee extends HttpServlet {
         String pay = request.getParameter("pay");
         String token = request.getParameter("token");
         try {
-
             EmailValidator validator = EmailValidator.getInstance();
             if (!(validator.isValid(email))) {
                 WriteError("Error: Email is invalid.", writer);
@@ -51,10 +48,8 @@ public class CreateEmployee extends HttpServlet {
                 WriteError("Error: Email is already registered with that company.", writer);
                 return;
             }
-
             String companyEmail = SQLQuerySelect.getCompanyEmailFromCreateEmployeeToken(token);
             String hashedPassword = BCrypt.hashpw(firstPassword, BCrypt.gensalt(12));
-
             SQLQueryInsert.addEmployee(email, firstName, secondName, hashedPassword, companyEmail, pay);
             response.sendRedirect("index.jsp");
         } catch (SQLException e) {

@@ -1,6 +1,5 @@
 package servlets;
 
-import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
 import javax.servlet.http.HttpServlet;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Base64;
 
 /**
  * Servlet to update employee details (name and email).
@@ -21,7 +19,6 @@ public class UpdateEmployeeDetails extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         try {
             HttpSession session = request.getSession(false);
             String oldEmail = (String) session.getAttribute("email");

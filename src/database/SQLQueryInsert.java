@@ -19,7 +19,8 @@ public class SQLQueryInsert extends SQLQuery {
      */
     public synchronized static void addCompany(String companyEmail, String companyName, String compPassword) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableCompany + " VALUES ('%s', '%s', '%s');", companyEmail, companyName, compPassword));
+        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableCompany + " VALUES " +
+                "('%s', '%s', '%s');", companyEmail, companyName, compPassword));
     }
 
     /**
@@ -33,7 +34,9 @@ public class SQLQueryInsert extends SQLQuery {
      */
     public synchronized static void addEmployee(String email, String firstName, String secondName, String password, String companyEmail, String hourlyPay) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableEmployees + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s');", email, firstName, secondName, password, companyEmail, hourlyPay));
+        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableEmployees + " " +
+                "VALUES ('%s', '%s', '%s', '%s', '%s', '%s');",
+                email, firstName, secondName, password, companyEmail, hourlyPay));
     }
 
     /**
@@ -45,7 +48,8 @@ public class SQLQueryInsert extends SQLQuery {
      */
     public synchronized static void addCompanyCreateEmployeeToken(String companyEmail, String token, String timeStamp) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableCreateEmployeeToken + " VALUES ('%s','%s', '%s');", companyEmail, token, timeStamp));
+        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableCreateEmployeeToken +
+                " VALUES ('%s','%s', '%s');", companyEmail, token, timeStamp));
     }
 
     /**
@@ -57,6 +61,7 @@ public class SQLQueryInsert extends SQLQuery {
      */
     public synchronized static void addClockInTimeStamp(String timeStampId, String email, String timeStamp) throws SQLException{
         Statement statement = DataBase.getConnection().createStatement();
-        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableTimeStamps + " VALUES ('%s', '%s', '%s', %s);", timeStampId, email, timeStamp, null));
+        statement.execute(String.format("INSERT INTO " + databaseName + "." + tableTimeStamps + " " +
+                "VALUES ('%s', '%s', '%s', %s);", timeStampId, email, timeStamp, null));
     }
 }

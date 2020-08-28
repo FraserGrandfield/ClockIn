@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Base64;
 
 /**
  * Servlet for a company to delete an employee.
@@ -21,11 +20,9 @@ public class CompanyDeleteEmployee extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         try {
             HttpSession session = request.getSession(false);
             String companyEmail = (String) session.getAttribute("email");
-
             String employeeEmail = request.getParameter("email");
             if (SQLQuerySelect.isEmployeeWithCompany(employeeEmail, companyEmail)) {
                 SQLQueryDelete.deleteEmployee(employeeEmail);
