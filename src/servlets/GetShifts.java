@@ -15,6 +15,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * Gets shifts between two dates and the pay for those shifts.
+ * @author Fraser Grandfield
+ * @version 1.0
+ * @since 29/08/2020
+ */
 public class GetShifts extends HttpServlet {
 
     @Override
@@ -47,12 +53,13 @@ public class GetShifts extends HttpServlet {
             }
             out += "Pay: " + total;
             PrintWriter writer = response.getWriter();
-            System.out.println(out);
             writer.print(out);
             writer.flush();
             writer.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            return;
         }
     }
 }

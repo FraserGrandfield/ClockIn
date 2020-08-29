@@ -260,4 +260,17 @@ public class SQLQuerySelect extends SQLQuery{
         }
         return Float.parseFloat(temp);
     }
+
+    public synchronized static ArrayList<String> getEmployeeNames(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + firstName + ", " + secondName + " FROM "
+        + databaseName + "." + tableEmployees + " WHERE " + employeeCompanyEmail + " = '%s';", email));
+        ArrayList<String> outList = new ArrayList<>();
+        while(resultSet.next()) {
+            String temp = resultSet.getString(1);
+            temp += " " + resultSet.getString(2);
+            outList.add(temp);
+        }
+        return outList;
+    }
 }
