@@ -36,6 +36,7 @@ public class CompanyCheckPassword extends HttpServlet {
                 }
                 HttpSession newSession = request.getSession();
                 newSession.setAttribute("email", companyEmail);
+                newSession.setAttribute("user", "1");
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
