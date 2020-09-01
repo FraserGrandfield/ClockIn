@@ -1,60 +1,3 @@
-<%--<!DOCTYPE html>--%>
-<%--<%@page session="false"%>--%>
-<%--<html lang="en">--%>
-<%--<head>--%>
-<%--    <meta charset="UTF-8">--%>
-<%--    <title>Title</title>--%>
-<%--</head>--%>
-<%--<body>--%>
-<%--    <form name="CreateEmployeeForm" method="post" action="createemployee">--%>
-<%--        First name: <input type="text" name="firstName"/><br/>--%>
-<%--        Second name: <input type="text" name="secondName"/><br/>--%>
-<%--        Email: <input type="text" name="email"/><br/>--%>
-<%--        Password: <input type="text" name="firstPassword"/><br/>--%>
-<%--        Confirm Password: <input type="text" name="secondPassword"/><br/>--%>
-<%--        Pay: <input type="text" name="pay"/><br/>--%>
-<%--        Token: <input type="text" name="token"/><br/>--%>
-<%--        <input type="submit" value="create Account" />--%>
-<%--    </form><br/>--%>
-
-<%--    <form name="CreateCompanyForm" method="post" action="createcompany">--%>
-<%--        Company name: <input type="text" name="companyName"/><br/>--%>
-<%--        Password: <input type="text" name="firstPassword"/><br/>--%>
-<%--        Confirm password: <input type="text" name="secondPassword"/><br/>--%>
-<%--        Email: <input type="text" name="email"/><br/>--%>
-<%--        <input type="submit" value="create Account" />--%>
-<%--    </form><br/>--%>
-
-<%--    Company Email: <input type="text" id="compEmail"><br/>--%>
-<%--    Password: <input type="password" id="compPassword"><br/>--%>
-<%--    <button id="compSubmitButton" onclick="compLogin()">Log In</button><br/>--%>
-
-<%--    <form name="EmployeeLogin" method="post" action="employeecheckpassword">--%>
-<%--        Email: <input type="text" name="email"/><br/>--%>
-<%--        Password: <input type="text" name="password"/><br/>--%>
-<%--        <input type="submit" value="Login" />--%>
-<%--    </form><br/>--%>
-
-<%--</body>--%>
-<%--</html>--%>
-
-<%--<script>--%>
-<%--    //TODO company login--%>
-<%--    function compLogin() {--%>
-<%--        var httpRequest = new XMLHttpRequest();--%>
-<%--        var email = document.getElementById("compEmail").value;--%>
-<%--        var password = document.getElementById("compPassword").value;--%>
-<%--        httpRequest.onreadystatechange = function () {--%>
-<%--            if (this.status === 200 && this.readyState === 4) {--%>
-<%--                console.log("Logged in");--%>
-<%--            }--%>
-<%--        };--%>
-<%--        httpRequest.open("POST", "companycheckpassword", true);--%>
-<%--        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");--%>
-<%--        httpRequest.send("email=" + email + "&password=" + password);--%>
-<%--    }--%>
-<%--</script>--%>
-
 <!DOCTYPE html>
 <html lang="en">
 <%@page session="false"%>
@@ -96,17 +39,16 @@
             </li>
 
             <li class="nav-item">
-            <a class="nav-link" href="Contact.jsp" style="font-size: 15px">Contact</a>
+                <a class="nav-link" href="Contact.jsp" style="font-size: 15px">Contact</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="LogIn.jsp" style="font-size: 15px">Log In</a>
+                <a class="nav-link" href="Calendar.jsp" style="font-size: 15px">Calendar</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="SignUp.jsp" style="font-size: 15px">Sign up</a>
+                <a class="nav-link" onclick="LogOut()" href="index.jsp" style="font-size: 15px">Log Out</a>
             </li>
-
         </ul>
 
     </div>
@@ -137,6 +79,23 @@
 
 <div class="container-fluid text-center bg-1">
     <div>
+        <a role="button" class="btn btn2" onclick="checkClock()"><img src="Images/easyshift_icon_Logo.png" width="150px" height=150px"></a>
+        <h2>Clock In / Out</h2>
+        <div id="ClockedIn">
+            <div id="text">Clocked in</div>
+        </div>
+        <div id="clockOutError" style="display: none">
+            <div id="textClockOutError">Error clocking out: clock out cannot be before clock in.</div>
+        </div>
+        <div id="clockedOut">
+            <h2>Clock in date and time.</h2>
+            <input type="datetime-local" id="dateTimeClockIn" value="2018-06-12T19:30" min="2018-06-07T00:00">
+            <h2>Clock out date and time.</h2>
+            <input type="datetime-local" id="dateTimeClockOut" value="2018-06-12T19:30" min="2018-06-07T00:00">
+            <input type="button" value="Clock Out" onclick="clockOut()">
+            <input type="button" value="Cancel" onclick="document.getElementById('clockedOut').style.display = 'none'">
+            <input type="button" value="Delete current clock in" onclick="DeleteClockIn()">
+        </div>
     </div>
 </div>
 <!-- Footer -->

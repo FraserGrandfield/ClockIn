@@ -262,6 +262,12 @@ public class SQLQuerySelect extends SQLQuery{
         return Float.parseFloat(temp);
     }
 
+    /**
+     * Get all employee full names in a company.
+     * @param email company email.
+     * @return ArrayList of employee names.
+     * @throws SQLException
+     */
     public synchronized static ArrayList<String> getEmployeeNames(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT " + firstName + ", " + secondName + " FROM "
@@ -275,6 +281,12 @@ public class SQLQuerySelect extends SQLQuery{
         return outList;
     }
 
+    /**
+     * Get createEmployee token.
+     * @param email company email.
+     * @return String token.
+     * @throws SQLException
+     */
     public synchronized static String getCreateEmployeeToken(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeToken + " FROM " +

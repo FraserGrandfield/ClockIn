@@ -25,7 +25,9 @@ public class AuthenticationFilter implements Filter{
         //TODO log this properly
         System.out.println("Requested Resource::"+uri);
         HttpSession session = request.getSession(false);
-        if(session == null && !(uri.endsWith("createcompany") || uri.endsWith("createemployee") || uri.endsWith("employeecheckpassword") || uri.endsWith("companycheckpassword") || uri.endsWith("index.jsp"))){
+        if(session == null && !(uri.endsWith("createcompany") || uri.endsWith("createemployee") ||
+                uri.endsWith("employeecheckpassword") || uri.endsWith("companycheckpassword")
+                || uri.endsWith("index.jsp") || uri.endsWith("LogIn.jsp") || uri.endsWith("SignUp.jsp"))){
             System.out.println("Unauthorized access request");
             response.sendRedirect("index.jsp");
         }else{
