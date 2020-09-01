@@ -2,6 +2,7 @@ package database;
 
 import servlets.ClockIn;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -273,4 +274,16 @@ public class SQLQuerySelect extends SQLQuery{
         }
         return outList;
     }
-}
+
+    public synchronized static String getCreateEmployeeToken(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + createEmployeeToken + " FROM " +
+                databaseName + "." + tableCreateEmployeeToken + " WHERE " + createEmployeeCompanyEmailPKFK +
+                " = '%s';", email));
+        String temp = "";
+        while(resultSet.next()) {
+            temp = resultSet.getString(1);
+        }
+        return temp;
+    }
+ }
