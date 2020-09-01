@@ -144,6 +144,16 @@
         <url-pattern>/getallemployeenames/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetCreateEmployeeToken</servlet-name>
+        <servlet-class>servlets.GetCompanyToken</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetCreateEmployeeToken</servlet-name>
+        <url-pattern>/getcompanytoken/*</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>

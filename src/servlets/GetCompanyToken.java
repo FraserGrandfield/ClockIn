@@ -23,6 +23,7 @@ public class GetCompanyToken extends HttpServlet {
         String email = (String) session.getAttribute("email");
         try {
             String token = SQLQuerySelect.getCreateEmployeeToken(email);
+            System.out.println(token);
             PrintWriter writer = response.getWriter();
             writer.print(token);
             writer.flush();

@@ -15,7 +15,7 @@
 
     <link rel = "stylesheet" type = "text/css" href = "custom.css" />
 </head>
-<body>
+<body onload="loadEmployees()">
 
 <!---- The Navigationbar (navbar) ---->
 <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
@@ -78,8 +78,9 @@
 <!---- third Container ---->
 
 <div class="container-fluid text-center bg-1">
-
+    <h2 class="box" style="color: #000000" id="tokenText"></h2>
 </div>
+
 <!-- Footer -->
 <footer class="container-fluid bg-logo-green text-center">
     <h2>Easyshift.app</h2>
@@ -88,3 +89,17 @@
 </body>
 
 </html>
+
+<script>
+    function loadEmployees() {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 200 && this.readyState === 4) {
+                console.log(this.responseText);
+                document.getElementById("tokenText").innerText = this.responseText;
+            }
+        };
+        httpRequest.open("POST", "getcompanytoken", true);
+        httpRequest.send();
+    }
+</script>
