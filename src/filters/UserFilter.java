@@ -22,7 +22,6 @@ public class UserFilter implements Filter {
             filterChain.doFilter(request, response);
         } else {
             String userNo = (String) session.getAttribute("user");
-            System.out.println(userNo);
             if (userNo.equals("1") && (uri.endsWith("home.jsp") || uri.endsWith("Calendar.jsp"))) {
                 System.out.println("Unauthorized access request");
                 response.sendRedirect("DashBoard.jsp");

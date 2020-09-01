@@ -134,6 +134,16 @@
         <url-pattern>/getshifts/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetAllEmployeeNames</servlet-name>
+        <servlet-class>servlets.GetAllEmployeeNames</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetAllEmployeeNames</servlet-name>
+        <url-pattern>/getallemployeenames/*</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>

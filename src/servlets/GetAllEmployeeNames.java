@@ -25,8 +25,12 @@ public class GetAllEmployeeNames extends HttpServlet {
         String email = (String) session.getAttribute("email");
         try {
             ArrayList<String> employeeNames = SQLQuerySelect.getEmployeeNames(email);
+            String temp = "";
+            for(int i = 0; i < employeeNames.size(); i++) {
+                temp += employeeNames.get(i) + " ";
+            }
             PrintWriter writer = response.getWriter();
-            writer.print(employeeNames);
+            writer.print(temp);
             writer.flush();
             writer.close();
         } catch (SQLException e) {

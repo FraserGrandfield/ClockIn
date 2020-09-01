@@ -22,7 +22,7 @@ public class CompanyCheckPassword extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            String companyEmail = request.getParameter("companyEmail");
+            String companyEmail = request.getParameter("email");
             if (SQLQuerySelect.doesCompanyEmailExist(companyEmail)) {
                 String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyEmail);
                 String password = request.getParameter("password");
@@ -38,6 +38,7 @@ public class CompanyCheckPassword extends HttpServlet {
                 newSession.setAttribute("email", companyEmail);
                 newSession.setAttribute("user", "1");
                 response.setStatus(HttpServletResponse.SC_OK);
+                response.sendRedirect("DashBoard.jsp");
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }

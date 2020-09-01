@@ -32,8 +32,8 @@ public class CreateCompany extends HttpServlet {
         PrintWriter writer = response.getWriter();
         try {
             String name = request.getParameter("companyName");
-            String firstPassword = new String(Base64.getDecoder().decode(request.getParameter("firstPassword")));
-            String secondPassword = new String(Base64.getDecoder().decode(request.getParameter("secondPassword")));
+            String firstPassword = request.getParameter("firstPassword");
+            String secondPassword = request.getParameter("secondPassword");
             String compEmail = request.getParameter("email");
             EmailValidator validator = EmailValidator.getInstance();
             if (!(validator.isValid(compEmail))) {

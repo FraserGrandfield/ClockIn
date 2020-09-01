@@ -25,8 +25,8 @@
         <input type="submit" value="create Account" />
     </form><br/>
 
-    Company Email: <input type="text" id="compEmail">
-    Password: <input type="password" id="compPassword">
+    Company Email: <input type="text" id="compEmail"><br/>
+    Password: <input type="password" id="compPassword"><br/>
     <button id="compSubmitButton" onclick="compLogin()">Log In</button><br/>
 
     <form name="EmployeeLogin" method="post" action="employeecheckpassword">
@@ -42,13 +42,15 @@
     //TODO company login
     function compLogin() {
         var httpRequest = new XMLHttpRequest();
+        var email = document.getElementById("compEmail").value;
+        var password = document.getElementById("compPassword").value;
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
-
+                console.log("Logged in");
             }
         };
         httpRequest.open("POST", "companycheckpassword", true);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        httpRequest.send("timestamp=" + dateTime);
+        httpRequest.send("email=" + email + "&password=" + password);
     }
 </script>
