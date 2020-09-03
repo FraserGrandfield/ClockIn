@@ -29,6 +29,7 @@ public class EmployeeCheckPassword extends HttpServlet {
                 String password = request.getParameter("password");
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
                     WriteError("Error: Email or password is incorrect.", writer);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
                 HttpSession session = request.getSession(false);
@@ -38,14 +39,16 @@ public class EmployeeCheckPassword extends HttpServlet {
                 HttpSession newSession = request.getSession();
                 newSession.setAttribute("email", email);
                 newSession.setAttribute("user", "0");
-                response.sendRedirect("home.jsp");
+                response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 WriteError("Error: Email or password is incorrect.", writer);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             WriteError("Error: Currently having issues communicating to the server.", writer);
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
         }
     }

@@ -38,7 +38,6 @@ public class CompanyCheckPassword extends HttpServlet {
                 newSession.setAttribute("email", companyEmail);
                 newSession.setAttribute("user", "1");
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.sendRedirect("DashBoard.jsp");
             } else {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             }

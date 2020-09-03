@@ -75,6 +75,12 @@
 </html>
 
 <script>
+    function LogOut() {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open("POST", "logout", true);
+        httpRequest.send();
+    }
+
     function loadEmployees() {
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {

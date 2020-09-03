@@ -9,12 +9,53 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script>
+        function LogOut() {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "logout", true);
+            httpRequest.send();
+        }
+
         function empShowLogIn() {
             document.getElementById("logInContainer").style.display = "block";
+            document.getElementById("compLog").style.display = "none";
+            document.getElementById("empLog").style.display = "block";
         }
 0
         function compShowLogIn() {
+            document.getElementById("logInContainer").style.display = "block";
+            document.getElementById("empLog").style.display = "none";
+            document.getElementById("compLog").style.display = "block";
+        }
 
+            //TODO company login
+            function empLogin() {
+                var httpRequest = new XMLHttpRequest();
+                var email = document.getElementById("empEmail").value;
+                var password = document.getElementById("empPass").value;
+                httpRequest.onreadystatechange = function () {
+                    if (this.status === 200 && this.readyState === 4) {
+                        console.log("Logged in");
+                        window.location = "http://localhost:8080/home.jsp"
+                    }
+                };
+                httpRequest.open("POST", "employeecheckpassword", true);
+                httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                httpRequest.send("email=" + email + "&password=" + password);
+            }
+
+        function compLogin() {
+            var httpRequest = new XMLHttpRequest();
+            var email = document.getElementById("compEmail").value;
+            var password = document.getElementById("compPass").value;
+            httpRequest.onreadystatechange = function () {
+                if (this.status === 200 && this.readyState === 4) {
+                    console.log("Logged in");
+                    window.location = "http://localhost:8080/DashBoard.jsp"
+                }
+            };
+            httpRequest.open("POST", "companycheckpassword", true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send("email=" + email + "&password=" + password);
         }
     </script>
     <!----Google fonts---->
@@ -50,6 +91,14 @@
                 <a class="nav-link" href="Contact.jsp" style="font-size: 15px">Contact</a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="LogIn.jsp" style="font-size: 15px">Log In</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="SignUp.jsp" style="font-size: 15px">Sign up</a>
+            </li>
+
         </ul>
 
     </div>
@@ -69,7 +118,7 @@
 <div class="container-fluid text-center bg-3">
     <div>
         <a role="button" class="btn btn1" onclick="empShowLogIn()">Employee Log In</a>
-        <a role="button" class="btn btn1">Company Log In</a>
+        <a role="button" class="btn btn1" onclick="compShowLogIn()">Company Log In</a>
     </div>
 </div>
 
@@ -77,10 +126,19 @@
 <!---- third Container ---->
 
 <div class="container-fluid text-center bg-1" style="display: none" id="logInContainer">
-    <div id="empLog">
-        Email: <input class="input" type="text" id="empEmail"><br>
-        Password: <input class="input" type="password" id="compPass"><br>
-        <a role="button" class="btn btn1">Log In</a>
+    <div id="empLog" style="display: none">
+        <h2>Email:</h2>
+        <input class="input" type="text" id="empEmail"><br>
+        <h2>Password:</h2>
+        <input class="input" type="password" id="empPass"><br>
+        <a role="button" class="btn btn1" onclick="empLogin()">Log In</a>
+    </div>
+    <div id="compLog" style="display: none">
+        <h2>Company Email:</h2>
+        <input class="input" type="text" id="compEmail"><br>
+        <h2>Password:</h2>
+        <input class="input" type="password" id="compPass"><br>
+        <a role="button" class="btn btn1" onclick="compLogin()">Log In</a>
     </div>
 </div>
 <!-- Footer -->
