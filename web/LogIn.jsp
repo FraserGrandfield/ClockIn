@@ -36,6 +36,9 @@
                     if (this.status === 200 && this.readyState === 4) {
                         console.log("Logged in");
                         window.location = "http://localhost:8080/home.jsp"
+                    } else if (this.status === 401 && this.readyState === 4) {
+                        console.log("Error")
+                        document.getElementById("errorText").style.display = "block";
                     }
                 };
                 httpRequest.open("POST", "employeecheckpassword", true);
@@ -51,6 +54,8 @@
                 if (this.status === 200 && this.readyState === 4) {
                     console.log("Logged in");
                     window.location = "http://localhost:8080/DashBoard.jsp"
+                } else if (this.status === 401 && this.readyState === 4) {
+                    document.getElementById("errorText").style.display = "block";
                 }
             };
             httpRequest.open("POST", "companycheckpassword", true);
@@ -140,6 +145,7 @@
         <input class="input" type="password" id="compPass"><br>
         <a role="button" class="btn btn1" onclick="compLogin()">Log In</a>
     </div>
+    <h2 style="display: none" id="errorText" class="errorBox">Your email or password is incorrect</h2>
 </div>
 <!-- Footer -->
 <footer class="container-fluid bg-logo-green text-center">

@@ -44,7 +44,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Calendar.jsp" style="font-size: 15px">Calendar</a>
+                <a class="nav-link" href="Employees.jsp" style="font-size: 15px">Employees</a>
             </li>
 
             <li class="nav-item">

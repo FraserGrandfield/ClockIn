@@ -23,6 +23,7 @@ public class EmployeeCheckPassword extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
         try {
+            //TODO check if email or password is null
             String email = request.getParameter("email");
             if (SQLQuerySelect.isEmailInDatabase(email)) {
                 String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
