@@ -29,7 +29,6 @@ public class CreateCompany extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter writer = response.getWriter();
         try {
             String name = request.getParameter("companyName");
             String firstPassword = request.getParameter("firstPassword");
@@ -37,34 +36,26 @@ public class CreateCompany extends HttpServlet {
             String compEmail = request.getParameter("email");
             EmailValidator validator = EmailValidator.getInstance();
             if (!(validator.isValid(compEmail))) {
-                WriteError("Error: Email is invalid.", writer);
+                response.setStatus(470);
                 return;
             } else if (!firstPassword.equals(secondPassword)) {
-                WriteError("Error: Passwords do not match.", writer);
+                response.setStatus(471);
                 return;
             } else if (firstPassword.length() < 6) {
-                WriteError("Error: Password is too short.", writer);
+                response.setStatus(472);
                 return;
             } else if (SQLQuerySelect.doesCompanyEmailExist(compEmail)) {
-                WriteError("Error: Email is already registered.", writer);
+                response.setStatus(474);
                 return;
             }
             String hashedPassword = BCrypt.hashpw(firstPassword, BCrypt.gensalt(12));
             SQLQueryInsert.addCompany(compEmail, name, hashedPassword);
             generateToken(compEmail);
-            response.sendRedirect("index.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
-            WriteError("Error: Currently having issues communicating to the server.", writer);
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
         }
-    }
-
-    private static void WriteError(String error, PrintWriter writer) {
-        writer.println("<script type=\"text/javascript\">");
-        writer.println("alert('" + error + "');");
-        writer.println("location='index.jsp';");
-        writer.println("</script>");
     }
 
     private static void generateToken(String companyEmail) throws SQLException {

@@ -21,17 +21,6 @@
             document.getElementById("compSign").style.display = "block";
         }
 
-        <%--    <form name="CreateEmployeeForm" method="post" action="createemployee">--%>
-        <%--        First name: <input type="text" name="firstName"/><br/>--%>
-        <%--        Second name: <input type="text" name="secondName"/><br/>--%>
-        <%--        Email: <input type="text" name="email"/><br/>--%>
-        <%--        Password: <input type="text" name="firstPassword"/><br/>--%>
-        <%--        Confirm Password: <input type="text" name="secondPassword"/><br/>--%>
-        <%--        Pay: <input type="text" name="pay"/><br/>--%>
-        <%--        Token: <input type="text" name="token"/><br/>--%>
-        <%--        <input type="submit" value="create Account" />--%>
-        <%--    </form><br/>--%>
-
         <%--    <form name="CreateCompanyForm" method="post" action="createcompany">--%>
         <%--        Company name: <input type="text" name="companyName"/><br/>--%>
         <%--        Password: <input type="text" name="firstPassword"/><br/>--%>
@@ -84,22 +73,42 @@
                 + password1 + "&secondPassword=" + password2 + "&pay=" + pay + "&token=" + token);
         }
 
-        function compLcompSignUpogin() {
+        function compSignUp() {
             //TODO add check if field is blank
             var httpRequest = new XMLHttpRequest();
+            var name = document.getElementById("compName").value;
             var email = document.getElementById("compEmail").value;
-            var password = document.getElementById("compPass").value;
+            var password1 = document.getElementById("compPassword1").value;
+            var password2 = document.getElementById("compPassword2").value;
             httpRequest.onreadystatechange = function () {
                 if (this.status === 200 && this.readyState === 4) {
-                    console.log("Logged in");
-                    window.location = "http://localhost:8080/DashBoard.jsp"
-                } else if (this.status === 401 && this.readyState === 4) {
+                    console.log("Signed up");
+                    window.location = "http://localhost:8080/LogIn.jsp"
+                } else if (this.status === 470 && this.readyState === 4) {
+                    console.log("Error")
                     document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Invalid email";
+                } else if (this.status === 471 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Passwords do not match";
+                } else if (this.status === 472 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Password must be more than 6 characters";
+                } else if (this.status === 474 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Email already exists";
+                } else if (this.readyState === 4){
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Internal server issue, try again later";
                 }
             };
-            httpRequest.open("POST", "companycheckpassword", true);
+            httpRequest.open("POST", "createcompany", true);
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            httpRequest.send("email=" + email + "&password=" + password);
+            httpRequest.send("companyName=" + name + "&email=" + email + "&firstPassword=" + password1 + "&secondPassword="
+                + password2);
         }
     </script>
 
