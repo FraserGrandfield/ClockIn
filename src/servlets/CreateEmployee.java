@@ -22,7 +22,6 @@ public class CreateEmployee extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter writer = response.getWriter();
         String firstName = request.getParameter("firstName");
         String secondName = request.getParameter("secondName");
         String email = request.getParameter("email");
@@ -30,39 +29,32 @@ public class CreateEmployee extends HttpServlet {
         String secondPassword = request.getParameter("secondPassword");
         String pay = request.getParameter("pay");
         String token = request.getParameter("token");
+        //TODO add check for if pay is null
         try {
             EmailValidator validator = EmailValidator.getInstance();
             if (!(validator.isValid(email))) {
-                WriteError("Error: Email is invalid.", writer);
+                response.setStatus(470);
                 return;
             } else if (!firstPassword.equals(secondPassword)) {
-                WriteError("Error: Passwords do not match.", writer);
+                response.setStatus(471);
                 return;
             } else if (firstPassword.length() < 6){
-                WriteError("Error: Password is too short.", writer);
+                response.setStatus(472);
                 return;
             } else if (!SQLQuerySelect.doesEmployeeHaveCreateAccountValidToken(token)) {
-                WriteError("Error: Incorrect company token.", writer);
+                response.setStatus(473);
                 return;
             } else if (SQLQuerySelect.isEmailInDatabase(email)) {
-                WriteError("Error: Email is already registered with that company.", writer);
+                response.setStatus(474);
                 return;
             }
             String companyEmail = SQLQuerySelect.getCompanyEmailFromCreateEmployeeToken(token);
             String hashedPassword = BCrypt.hashpw(firstPassword, BCrypt.gensalt(12));
             SQLQueryInsert.addEmployee(email, firstName, secondName, hashedPassword, companyEmail, pay);
-            response.sendRedirect("index.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
-            WriteError("Error: Currently having issues communicating to the server.", writer);
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
         }
-    }
-
-    private static void WriteError(String error, PrintWriter writer) {
-        writer.println("<script type=\"text/javascript\">");
-        writer.println("alert('" + error + "');");
-        writer.println("location='index.jsp';");
-        writer.println("</script>");
     }
 }

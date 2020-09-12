@@ -15,7 +15,7 @@
 
     <link rel = "stylesheet" type = "text/css" href = "custom.css" />
 </head>
-<body onload="loadEmployees()">
+<body onload="loadToken()">
 
 <!---- The Navigationbar (navbar) ---->
 <nav class="navbar navbar-expand-sm navbar-light bg-light sticky-top">
@@ -97,7 +97,7 @@
         httpRequest.send();
     }
 
-    function loadEmployees() {
+    function loadToken() {
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {

@@ -9,12 +9,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script>
-        function LogOut() {
-            var httpRequest = new XMLHttpRequest();
-            httpRequest.open("POST", "logout", true);
-            httpRequest.send();
-        }
-
         function empShowLogIn() {
             document.getElementById("logInContainer").style.display = "block";
             document.getElementById("compLog").style.display = "none";
@@ -27,26 +21,27 @@
             document.getElementById("compLog").style.display = "block";
         }
 
-            //TODO company login
-            function empLogin() {
-                var httpRequest = new XMLHttpRequest();
-                var email = document.getElementById("empEmail").value;
-                var password = document.getElementById("empPass").value;
-                httpRequest.onreadystatechange = function () {
-                    if (this.status === 200 && this.readyState === 4) {
-                        console.log("Logged in");
-                        window.location = "http://localhost:8080/home.jsp"
-                    } else if (this.status === 401 && this.readyState === 4) {
-                        console.log("Error")
-                        document.getElementById("errorText").style.display = "block";
-                    }
-                };
-                httpRequest.open("POST", "employeecheckpassword", true);
-                httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                httpRequest.send("email=" + email + "&password=" + password);
-            }
+        function empLogin() {
+            //TODO Add check if fields are blank
+            var httpRequest = new XMLHttpRequest();
+            var email = document.getElementById("empEmail").value;
+            var password = document.getElementById("empPass").value;
+            httpRequest.onreadystatechange = function () {
+                if (this.status === 200 && this.readyState === 4) {
+                    console.log("Logged in");
+                    window.location = "http://localhost:8080/home.jsp"
+                } else if (this.status === 401 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                }
+            };
+            httpRequest.open("POST", "employeecheckpassword", true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send("email=" + email + "&password=" + password);
+        }
 
         function compLogin() {
+            //TODO Add check if fields are blank
             var httpRequest = new XMLHttpRequest();
             var email = document.getElementById("compEmail").value;
             var password = document.getElementById("compPass").value;
@@ -129,7 +124,6 @@
 
 
 <!---- third Container ---->
-
 <div class="container-fluid text-center bg-1" style="display: none" id="logInContainer">
     <div id="empLog" style="display: none">
         <h2>Email:</h2>

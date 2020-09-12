@@ -9,6 +9,100 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
+    <script>
+
+        function empShowLogIn() {
+            document.getElementById("compSign").style.display = "none";
+            document.getElementById("empSign").style.display = "block";
+        }
+
+        function compShowLogIn() {
+            document.getElementById("empSign").style.display = "none";
+            document.getElementById("compSign").style.display = "block";
+        }
+
+        <%--    <form name="CreateEmployeeForm" method="post" action="createemployee">--%>
+        <%--        First name: <input type="text" name="firstName"/><br/>--%>
+        <%--        Second name: <input type="text" name="secondName"/><br/>--%>
+        <%--        Email: <input type="text" name="email"/><br/>--%>
+        <%--        Password: <input type="text" name="firstPassword"/><br/>--%>
+        <%--        Confirm Password: <input type="text" name="secondPassword"/><br/>--%>
+        <%--        Pay: <input type="text" name="pay"/><br/>--%>
+        <%--        Token: <input type="text" name="token"/><br/>--%>
+        <%--        <input type="submit" value="create Account" />--%>
+        <%--    </form><br/>--%>
+
+        <%--    <form name="CreateCompanyForm" method="post" action="createcompany">--%>
+        <%--        Company name: <input type="text" name="companyName"/><br/>--%>
+        <%--        Password: <input type="text" name="firstPassword"/><br/>--%>
+        <%--        Confirm password: <input type="text" name="secondPassword"/><br/>--%>
+        <%--        Email: <input type="text" name="email"/><br/>--%>
+        <%--        <input type="submit" value="create Account" />--%>
+        <%--    </form><br/>--%>
+        function empSignUp() {
+            var httpRequest = new XMLHttpRequest();
+            var firstName = document.getElementById("empFirstName").value;
+            var secondName = document.getElementById("empSecondName").value;
+            var email = document.getElementById("empEmail").value;
+            var password1 = document.getElementById("empPassword1").value;
+            var password2 = document.getElementById("empPassword2").value;
+            var pay = document.getElementById("pay").value;
+            var token = document.getElementById("empToken").value;
+            httpRequest.onreadystatechange = function () {
+                //TODO add check if field is blank
+                if (this.status === 200 && this.readyState === 4) {
+                    console.log("Signed up");
+                    window.location = "http://localhost:8080/LogIn.jsp"
+                } else if (this.status === 470 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Invalid email";
+                } else if (this.status === 471 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Passwords do not match";
+                } else if (this.status === 472 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Password must be more than 6 characters";
+                } else if (this.status === 473 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Invalid token";
+                } else if (this.status === 474 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Email already exists";
+                } else if (this.readyState === 4){
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Internal server issue, try again later";
+                }
+            };
+            httpRequest.open("POST", "createemployee", true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send("firstName=" + firstName + "&secondName=" + secondName + "&email=" + email + "&firstPassword="
+                + password1 + "&secondPassword=" + password2 + "&pay=" + pay + "&token=" + token);
+        }
+
+        function compLcompSignUpogin() {
+            //TODO add check if field is blank
+            var httpRequest = new XMLHttpRequest();
+            var email = document.getElementById("compEmail").value;
+            var password = document.getElementById("compPass").value;
+            httpRequest.onreadystatechange = function () {
+                if (this.status === 200 && this.readyState === 4) {
+                    console.log("Logged in");
+                    window.location = "http://localhost:8080/DashBoard.jsp"
+                } else if (this.status === 401 && this.readyState === 4) {
+                    document.getElementById("errorText").style.display = "block";
+                }
+            };
+            httpRequest.open("POST", "companycheckpassword", true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send("email=" + email + "&password=" + password);
+        }
+    </script>
+
     <!----Google fonts---->
     <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap" rel="stylesheet">
@@ -43,11 +137,11 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Calendar.jsp" style="font-size: 15px">Calendar</a>
+                <a class="nav-link" href="LogIn.jsp" style="font-size: 15px">Log In</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" onclick="LogOut()" href="index.jsp" style="font-size: 15px">Log Out</a>
+                <a class="nav-link" href="SignUp.jsp" style="font-size: 15px">Sign up</a>
             </li>
         </ul>
 
@@ -64,40 +158,47 @@
 
 <!---- Second Container ---->
 
-
 <div class="container-fluid text-center bg-3">
     <div>
-        <h2>Welcome to the easyshift app!</h2>
-        <h2>We, at the easyshift team, wish to make the times you had to go back to work because you forgot to clock out, a thing of the past!</h2>
-
-        <a href="About.jsp" role="button" class="btn btn1">About</a>
+        <a role="button" class="btn btn1" onclick="empShowLogIn()">Employee Sign In</a>
+        <a role="button" class="btn btn1" onclick="compShowLogIn()">Company Sign In</a>
     </div>
 </div>
-
-
-<!---- third Container ---->
 
 <div class="container-fluid text-center bg-1">
-    <div>
-        <a role="button" class="btn btn2" onclick="checkClock()"><img src="Images/easyshift_icon_Logo.png" width="150px" height=150px"></a>
-        <h2>Clock In / Out</h2>
-        <div id="ClockedIn">
-            <div id="text">Clocked in</div>
-        </div>
-        <div id="clockOutError" style="display: none">
-            <div id="textClockOutError">Error clocking out: clock out cannot be before clock in.</div>
-        </div>
-        <div id="clockedOut">
-            <h2>Clock in date and time.</h2>
-            <input type="datetime-local" id="dateTimeClockIn" value="2018-06-12T19:30" min="2018-06-07T00:00">
-            <h2>Clock out date and time.</h2>
-            <input type="datetime-local" id="dateTimeClockOut" value="2018-06-12T19:30" min="2018-06-07T00:00">
-            <input type="button" value="Clock Out" onclick="clockOut()">
-            <input type="button" value="Cancel" onclick="document.getElementById('clockedOut').style.display = 'none'">
-            <input type="button" value="Delete current clock in" onclick="DeleteClockIn()">
-        </div>
+    <div id="empSign" style="display: none">
+        <h2>First name:</h2>
+        <input class="input" type="text" id="empFirstName"><br>
+        <h2>Second name:</h2>
+        <input class="input" type="text" id="empSecondName"><br>
+        <h2>Email:</h2>
+        <input class="input" type="text" id="empEmail"><br>
+        <h2>Password:</h2>
+        <input class="input" type="password" id="empPassword1"><br>
+        <h2>Confirm password:</h2>
+        <input class="input" type="password" id="empPassword2"><br>
+        <h2>Hourly pay:</h2>
+        <input class="input" type="text" id="pay"><br>
+        <h2>Company token:</h2>
+        <input class="input" type="text" id="empToken"><br>
+        <a role="button" class="btn btn1" onclick="empSignUp()">Sign Up</a>
     </div>
+
+    <div id="compSign" style="display: none">
+        <h2>Company Name:</h2>
+        <input class="input" type="text" id="compName"><br>
+        <h2>Company Email:</h2>
+        <input class="input" type="text" id="compEmail"><br>
+        <h2>Password:</h2>
+        <input class="input" type="password" id="compPassword1"><br>
+        <h2>Confirm password:</h2>
+        <input class="input" type="password" id="compPassword2"><br>
+        <a role="button" class="btn btn1" onclick="compSignUp()">Sign Up</a>
+    </div>
+    <h2 style="display: none" id="errorText" class="errorBox">Your email or password is incorrect</h2>
 </div>
+
+
 <!-- Footer -->
 <footer class="container-fluid bg-logo-green text-center">
     <h2>Easyshift.app</h2>
