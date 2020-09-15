@@ -32,7 +32,11 @@ public class CreateEmployee extends HttpServlet {
         //TODO add check for if pay is null
         try {
             EmailValidator validator = EmailValidator.getInstance();
-            if (!(validator.isValid(email))) {
+            if (firstName == "" || secondName == "" || email == "" || firstPassword == "" || secondPassword == "" ||
+                pay == "" || token == "") {
+                response.setStatus(475);
+                return;
+            } else if (!(validator.isValid(email))) {
                 response.setStatus(470);
                 return;
             } else if (!firstPassword.equals(secondPassword)) {

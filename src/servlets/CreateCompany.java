@@ -35,7 +35,10 @@ public class CreateCompany extends HttpServlet {
             String secondPassword = request.getParameter("secondPassword");
             String compEmail = request.getParameter("email");
             EmailValidator validator = EmailValidator.getInstance();
-            if (!(validator.isValid(compEmail))) {
+            if (name == "" || compEmail == "" || firstPassword == "" || secondPassword == "") {
+                response.setStatus(475);
+                return;
+            } else if (!(validator.isValid(compEmail))) {
                 response.setStatus(470);
                 return;
             } else if (!firstPassword.equals(secondPassword)) {

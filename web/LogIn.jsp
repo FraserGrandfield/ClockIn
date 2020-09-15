@@ -13,16 +13,17 @@
             document.getElementById("logInContainer").style.display = "block";
             document.getElementById("compLog").style.display = "none";
             document.getElementById("empLog").style.display = "block";
+            document.getElementById("errorText").style.display = "none";
         }
-0
+
         function compShowLogIn() {
             document.getElementById("logInContainer").style.display = "block";
             document.getElementById("empLog").style.display = "none";
             document.getElementById("compLog").style.display = "block";
+            document.getElementById("errorText").style.display = "none";
         }
 
         function empLogin() {
-            //TODO Add check if fields are blank
             var httpRequest = new XMLHttpRequest();
             var email = document.getElementById("empEmail").value;
             var password = document.getElementById("empPass").value;
@@ -41,7 +42,6 @@
         }
 
         function compLogin() {
-            //TODO Add check if fields are blank
             var httpRequest = new XMLHttpRequest();
             var email = document.getElementById("compEmail").value;
             var password = document.getElementById("compPass").value;

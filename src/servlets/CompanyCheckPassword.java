@@ -24,8 +24,12 @@ public class CompanyCheckPassword extends HttpServlet {
         try {
             String companyEmail = request.getParameter("email");
             if (SQLQuerySelect.doesCompanyEmailExist(companyEmail)) {
-                String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyEmail);
                 String password = request.getParameter("password");
+                if (companyEmail == "" || password == "") {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+                String encryptedPassword = SQLQuerySelect.getCompanyPassword(companyEmail);
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;

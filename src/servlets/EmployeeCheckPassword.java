@@ -21,15 +21,16 @@ public class EmployeeCheckPassword extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        PrintWriter writer = response.getWriter();
         try {
-            //TODO check if email or password is null
             String email = request.getParameter("email");
             if (SQLQuerySelect.isEmailInDatabase(email)) {
-                String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
                 String password = request.getParameter("password");
+                if (email == "" || password == "") {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+                String encryptedPassword = SQLQuerySelect.getEmployeePassword(email);
                 if (!BCrypt.checkpw(password, encryptedPassword)) {
-                    WriteError("Error: Email or password is incorrect.", writer);
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
@@ -42,22 +43,13 @@ public class EmployeeCheckPassword extends HttpServlet {
                 newSession.setAttribute("user", "0");
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
-                WriteError("Error: Email or password is incorrect.", writer);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            WriteError("Error: Currently having issues communicating to the server.", writer);
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             return;
         }
-    }
-
-    private static void WriteError(String error, PrintWriter writer) {
-        writer.println("<script type=\"text/javascript\">");
-        writer.println("alert('" + error + "');");
-        writer.println("location='index.jsp';");
-        writer.println("</script>");
     }
 }

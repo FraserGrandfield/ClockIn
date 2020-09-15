@@ -14,20 +14,15 @@
         function empShowLogIn() {
             document.getElementById("compSign").style.display = "none";
             document.getElementById("empSign").style.display = "block";
+            document.getElementById("errorText").style.display = "none";
         }
 
         function compShowLogIn() {
             document.getElementById("empSign").style.display = "none";
             document.getElementById("compSign").style.display = "block";
+            document.getElementById("errorText").style.display = "none";
         }
 
-        <%--    <form name="CreateCompanyForm" method="post" action="createcompany">--%>
-        <%--        Company name: <input type="text" name="companyName"/><br/>--%>
-        <%--        Password: <input type="text" name="firstPassword"/><br/>--%>
-        <%--        Confirm password: <input type="text" name="secondPassword"/><br/>--%>
-        <%--        Email: <input type="text" name="email"/><br/>--%>
-        <%--        <input type="submit" value="create Account" />--%>
-        <%--    </form><br/>--%>
         function empSignUp() {
             var httpRequest = new XMLHttpRequest();
             var firstName = document.getElementById("empFirstName").value;
@@ -38,7 +33,6 @@
             var pay = document.getElementById("pay").value;
             var token = document.getElementById("empToken").value;
             httpRequest.onreadystatechange = function () {
-                //TODO add check if field is blank
                 if (this.status === 200 && this.readyState === 4) {
                     console.log("Signed up");
                     window.location = "http://localhost:8080/LogIn.jsp"
@@ -62,6 +56,10 @@
                     console.log("Error")
                     document.getElementById("errorText").style.display = "block";
                     document.getElementById("errorText").innerText = "Error: Email already exists";
+                }else if (this.status === 475 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Please fill in all boxes";
                 } else if (this.readyState === 4){
                     document.getElementById("errorText").style.display = "block";
                     document.getElementById("errorText").innerText = "Error: Internal server issue, try again later";
@@ -74,7 +72,7 @@
         }
 
         function compSignUp() {
-            //TODO add check if field is blank
+            //TODO send error message to be displayed in the backend
             var httpRequest = new XMLHttpRequest();
             var name = document.getElementById("compName").value;
             var email = document.getElementById("compEmail").value;
@@ -100,6 +98,10 @@
                     console.log("Error")
                     document.getElementById("errorText").style.display = "block";
                     document.getElementById("errorText").innerText = "Error: Email already exists";
+                } else if (this.status === 475 && this.readyState === 4) {
+                    console.log("Error")
+                    document.getElementById("errorText").style.display = "block";
+                    document.getElementById("errorText").innerText = "Error: Please fill in all boxes";
                 } else if (this.readyState === 4){
                     document.getElementById("errorText").style.display = "block";
                     document.getElementById("errorText").innerText = "Error: Internal server issue, try again later";
