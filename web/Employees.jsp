@@ -62,8 +62,11 @@
 </div>
 
 <!---- Second Container ---->
-<div class="container-fluid text-center bg-4">
-    <h2 class="box" style="color: #000000" id="employees"></h2>
+<div class="container-fluid text-center bg-4" style="width: 100%">
+    <div class="scroll" style="width: 30%; float: left;">
+        <ul class="js-todo-list"></ul>
+    </div>
+    <a class="box" id="employeeDetails" style="display: none; margin-left: 33%; height: 500px"></a>
 </div>
 
 <!---- Footer ---->
@@ -75,6 +78,8 @@
 </html>
 
 <script>
+    let employeesList = [];
+
     function LogOut() {
         var httpRequest = new XMLHttpRequest();
         httpRequest.open("POST", "logout", true);
@@ -85,11 +90,35 @@
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
-                console.log(this.responseText);
-                document.getElementById("employees").innerText = this.responseText;
+                employeesList = this.responseText.split("|");
+                loopRender();
             }
         };
         httpRequest.open("POST", "getallemployeenames", true);
         httpRequest.send();
     }
+
+    function loopRender() {
+        for (var i = 0; i < employeesList.length - 1; i++) {
+            renderList(employeesList[i]);
+        }
+    }
+
+    function renderList(name) {
+        console.log(name);
+        var employeeList = name.split("#");
+        const list = document.querySelector(".js-todo-list");
+        const node = document.createElement("li");
+        node.setAttribute("class", "todo-item js-tick");
+        node.innerText = employeeList[0];
+        node.setAttribute("id", employeeList[1]);
+        list.append(node);
+    }
+    const list = document.querySelector(".js-todo-list");
+    list.addEventListener("click", event => {
+        if (event.target.classList.contains("js-tick")) {
+            document.getElementById("employeeDetails").style.display = "block";
+            document.getElementById("employeeDetails").innerText = event.target.id;
+        }
+    });
 </script>

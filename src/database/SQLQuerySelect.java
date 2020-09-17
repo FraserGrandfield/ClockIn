@@ -268,17 +268,18 @@ public class SQLQuerySelect extends SQLQuery{
      * @return ArrayList of employee names.
      * @throws SQLException
      */
-    public synchronized static ArrayList<String> getEmployeeNames(String email) throws SQLException {
+    public synchronized static String getEmployeeNames(String email) throws SQLException {
         Statement statement = DataBase.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + firstName + ", " + secondName + " FROM "
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + firstName + ", " + secondName + ", " + employeeEmailPK +" FROM "
         + databaseName + "." + tableEmployees + " WHERE " + employeeCompanyEmail + " = '%s';", email));
         ArrayList<String> outList = new ArrayList<>();
+        String out = "";
         while(resultSet.next()) {
-            String temp = resultSet.getString(1);
-            temp += " " + resultSet.getString(2);
-            outList.add(temp);
+            out += resultSet.getString(1);
+            out += " " + resultSet.getString(2);
+            out += "#" + resultSet.getString(3) + "|";
         }
-        return outList;
+        return out;
     }
 
     /**

@@ -24,13 +24,10 @@ public class GetAllEmployeeNames extends HttpServlet {
         HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email");
         try {
-            ArrayList<String> employeeNames = SQLQuerySelect.getEmployeeNames(email);
-            String temp = "";
-            for(int i = 0; i < employeeNames.size(); i++) {
-                temp += employeeNames.get(i) + " ";
-            }
+            //TODO send names and emails as a json.
+            String employeeNamesAndEmails = SQLQuerySelect.getEmployeeNames(email);
             PrintWriter writer = response.getWriter();
-            writer.print(temp);
+            writer.print(employeeNamesAndEmails);
             writer.flush();
             writer.close();
         } catch (SQLException e) {
