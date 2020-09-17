@@ -154,6 +154,26 @@
         <url-pattern>/getcompanytoken/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetEmployeeDetails</servlet-name>
+        <servlet-class>servlets.GetEmployeesDetails</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetEmployeeDetails</servlet-name>
+        <url-pattern>/getemployeedetails/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateEmployeeDetailsAsCompany</servlet-name>
+        <servlet-class>servlets.UpdateEmployeeDetailsAsCompany</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UpdateEmployeeDetailsAsCompany</servlet-name>
+        <url-pattern>/updateemployeedetailsascompany/*</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>

@@ -299,4 +299,28 @@ public class SQLQuerySelect extends SQLQuery{
         }
         return temp;
     }
- }
+
+    public synchronized static String getEmployeeFirstName(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + firstName + " FROM "
+                + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
+        ArrayList<String> outList = new ArrayList<>();
+        String out = "";
+        while(resultSet.next()) {
+            out = resultSet.getString(1);
+        }
+        return out;
+    }
+
+    public synchronized static String getEmployeeLastName(String email) throws SQLException {
+        Statement statement = DataBase.getConnection().createStatement();
+        ResultSet resultSet = statement.executeQuery(String.format("SELECT " + secondName + " FROM "
+                + databaseName + "." + tableEmployees + " WHERE " + employeeEmailPK + " = '%s';", email));
+        ArrayList<String> outList = new ArrayList<>();
+        String out = "";
+        while(resultSet.next()) {
+            out = resultSet.getString(1);
+        }
+        return out;
+    }
+}

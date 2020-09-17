@@ -66,7 +66,18 @@
     <div class="scroll" style="width: 30%; float: left;">
         <ul class="js-todo-list"></ul>
     </div>
-    <a class="box" id="employeeDetails" style="display: none; margin-left: 33%; height: 500px"></a>
+    <a class="box" id="employeeDetails" style="display: none; margin-left: 33%; height: 550px">
+        <h3>Email:</h3>
+        <input class="input inp-1" type="text" id="empEmail"><br>
+        <h3>First name:</h3>
+        <input class="input inp-1" type="text" id="empFirstName"><br>
+        <h3>Second Name name:</h3>
+        <input class="input inp-1" type="text" id="empSecondName"><br>
+        <h3>Pay (Hourly):</h3>
+        <input class="input inp-1" type="text" id="empPay"><br>
+        <h3 role="button" class="btn btn3" onclick="updateDetails()">Update Details</h3>
+        <h3 class="box" style="display: none" id="detailsMessage">Details Updated!</h3>
+    </a>
 </div>
 
 <!---- Footer ---->
@@ -79,6 +90,7 @@
 
 <script>
     let employeesList = [];
+    let selectedEmail = "";
 
     function LogOut() {
         var httpRequest = new XMLHttpRequest();
@@ -105,7 +117,6 @@
     }
 
     function renderList(name) {
-        console.log(name);
         var employeeList = name.split("#");
         const list = document.querySelector(".js-todo-list");
         const node = document.createElement("li");
@@ -118,7 +129,44 @@
     list.addEventListener("click", event => {
         if (event.target.classList.contains("js-tick")) {
             document.getElementById("employeeDetails").style.display = "block";
-            document.getElementById("employeeDetails").innerText = event.target.id;
+            selectedEmail = event.target.id;
+            getEmployeeDetails(event.target.id);
         }
     });
+
+    function getEmployeeDetails(email) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 200 && this.readyState === 4) {
+                var json = JSON.parse(this.responseText);
+                document.getElementById("empEmail").value = json.email;
+                document.getElementById("empFirstName").value = json.firstName;
+                document.getElementById("empSecondName").value = json.secondName;
+                document.getElementById("empPay").value = json.pay;
+            }
+        };
+        httpRequest.open("POST", "getemployeedetails", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send("email=" + email);
+    }
+
+    function updateDetails() {
+        var email = document.getElementById("empEmail").value;
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 200 && this.readyState === 4) {
+                document.getElementById("detailsMessage").style.display = "block";
+                employeesList = [];
+                document.querySelectorAll(".todo-item").forEach(el => el.remove());
+                loadEmployees();
+            }
+        };
+        var firstName = document.getElementById("empFirstName").value;
+        var secondName = document.getElementById("empSecondName").value;
+        var pay = document.getElementById("empPay").value;
+        httpRequest.open("POST", "updateemployeedetailsascompany", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send("oldEmail=" + selectedEmail + "&email=" + email + "&firstName=" + firstName + "&secondName=" +
+            secondName + "&pay=" + pay);
+    }
 </script>

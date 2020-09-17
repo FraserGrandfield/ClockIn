@@ -96,6 +96,10 @@ p {font-size: 16px;}
     outline: none;
 }
 
+.inp-1 {
+    color: #000000;
+}
+
 .column {
     flex: 50%;
     padding: 5px;
@@ -178,6 +182,14 @@ p {font-size: 16px;}
 .btn2:hover{
     color: #00bead;
     background: rgba(0, 190, 173, 0.49);
+}
+
+.btn3{
+    color: #000000;
+    margin-bottom: 10px;
+}
+.btn3:hover{
+    color: #00bead;
 }
 
 /* galleri for Portfolio */
