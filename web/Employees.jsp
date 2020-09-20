@@ -66,7 +66,7 @@
     <div class="scroll" style="width: 30%; float: left;">
         <ul class="js-todo-list"></ul>
     </div>
-    <a class="box" id="employeeDetails" style="display: none; margin-left: 33%; height: 550px">
+    <a class="box" id="employeeDetails" style="display: none; margin-left: 33%; height: 800px">
         <h3>Email:</h3>
         <input class="input inp-1" type="text" id="empEmail"><br>
         <h3>First name:</h3>
@@ -77,6 +77,15 @@
         <input class="input inp-1" type="text" id="empPay"><br>
         <h3 role="button" class="btn btn3" onclick="updateDetails()">Update Details</h3>
         <h3 class="box" style="display: none" id="detailsMessage">Details Updated!</h3>
+        <h3>First Date</h3>
+        <input type="date" id="firstDate">
+        <br>
+        <h3>Second Date</h3>
+        <input type="date" id="secondDate">
+        <br>
+        <h2 role="button" class="btn btn3" onclick="getDate()">Get Shift</h2>
+        <br>
+        <h2 style="color: #000000" id="shiftText"></h2>
     </a>
 </div>
 
@@ -168,5 +177,21 @@
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         httpRequest.send("oldEmail=" + selectedEmail + "&email=" + email + "&firstName=" + firstName + "&secondName=" +
             secondName + "&pay=" + pay);
+    }
+
+    function getDate() {
+        var httpRequest = new XMLHttpRequest();
+        var firstDate = document.getElementById("firstDate").value;
+        var secondDate = document.getElementById("secondDate").value;
+
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 200 && this.readyState === 4) {
+                document.getElementById("shiftText").innerText = this.responseText;
+            }
+        };
+        console.log(selectedEmail);
+        httpRequest.open("POST", "getshifts", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send("firstDate=" + firstDate + "&secondDate=" + secondDate + "&employeeEmail=" + selectedEmail);
     }
 </script>

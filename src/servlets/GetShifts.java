@@ -27,6 +27,12 @@ public class GetShifts extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         String email= (String) session.getAttribute("email");
+        int user = Integer.parseInt(String.valueOf(session.getAttribute("user")));
+        if (user == 1) {
+            System.out.println("test1");
+            email = request.getParameter("employeeEmail");
+        }
+        System.out.println(email);
         String firstDate = request.getParameter("firstDate");
         String secondDate = request.getParameter("secondDate");
         firstDate += " 00:00";

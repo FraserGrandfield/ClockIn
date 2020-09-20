@@ -24,7 +24,7 @@ public class GetAllEmployeeNames extends HttpServlet {
         HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email");
         try {
-            //TODO send names and emails as a json.
+            //TODO send names and emails as a json array.
             String employeeNamesAndEmails = SQLQuerySelect.getEmployeeNames(email);
             PrintWriter writer = response.getWriter();
             writer.print(employeeNamesAndEmails);
