@@ -75,7 +75,13 @@
     <h2>Pay (Hourly):</h2>
     <input class="input" type="text" id="empPay"><br>
     <h3 role="button" class="btn btn1" onclick="updateDetails()">Update Details</h3><br>
-
+    <h2 class="box" style="display: none" id="detailsMessage">Details Updated!</h2>
+    <h2>Change Password:</h2>
+    <input class="input" type="text" id="empPassword1"><br>
+    <h2>Confirm Password:</h2>
+    <input class="input" type="text" id="empPassword2"><br>
+    <h3 role="button" class="btn btn1" onclick="updatePassword()">Update Password</h3><br>
+    <h2 class="box" style="display: none" id="passwordMessage">Password Updated!</h2>
 </div>
 
 <!---- third Container ---->
@@ -117,16 +123,13 @@
     }
 
     function updateDetails() {
-        var email = document.getElementById("empEmail").value;
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
                 document.getElementById("detailsMessage").style.display = "block";
-                employeesList = [];
-                document.querySelectorAll(".todo-item").forEach(el => el.remove());
-                loadEmployees();
             }
         };
+        var email = document.getElementById("empEmail").value;
         var firstName = document.getElementById("empFirstName").value;
         var secondName = document.getElementById("empSecondName").value;
         var pay = document.getElementById("empPay").value;
@@ -134,6 +137,20 @@
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         httpRequest.send("email=" + email + "&firstName=" + firstName + "&secondName=" +
             secondName + "&pay=" + pay + "&type=employee");
+    }
+
+    function updatePassword() {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if (this.status === 200 && this.readyState === 4) {
+                document.getElementById("passwordMessage").style.display = "block";
+            }
+        };
+        var password1 = document.getElementById("empPassword1").value;
+        var password2 = document.getElementById("empPassword2").value;
+        httpRequest.open("POST", "changeemployeepassword", true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send("newPassword1=" + password1 + "&newPassword2=" + password2);
     }
 
 </script>

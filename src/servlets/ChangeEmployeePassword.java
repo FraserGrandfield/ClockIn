@@ -1,5 +1,6 @@
 package servlets;
 
+import core.BCrypt;
 import database.SQLQueryUpdate;
 
 import javax.servlet.http.HttpServlet;
@@ -22,8 +23,14 @@ public class ChangeEmployeePassword extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             String email = (String) session.getAttribute("email");
-            String newPassword = request.getParameter("newPassword");
-            SQLQueryUpdate.updateEmployeePassword(email, newPassword);
+            String newPassword1 = request.getParameter("newPassword1");
+            String newPassword2 = request.getParameter("newPassword2");
+            if (!newPassword1.equals(newPassword2)) {
+                response.setStatus(471);
+                return;
+            }
+            String hashedPassword = BCrypt.hashpw(newPassword1, BCrypt.gensalt(12));
+            SQLQueryUpdate.updateEmployeePassword(email, hashedPassword);
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             e.printStackTrace();
