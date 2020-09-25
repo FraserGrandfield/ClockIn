@@ -78,10 +78,10 @@
         <h3 role="button" class="btn btn3" onclick="updateDetails()">Update Details</h3>
         <h3 class="box" style="display: none" id="detailsMessage">Details Updated!</h3>
         <h3>First Date</h3>
-        <input type="date" id="firstDate">
+        <input type="datetime-local" id="firstDate" value="2018-06-12T19:30" min="2018-06-07T00:00">
         <br>
         <h3>Second Date</h3>
-        <input type="date" id="secondDate">
+        <input type="datetime-local" id="secondDate" value="2018-06-12T19:30" min="2018-06-07T00:00">
         <br>
         <h2 role="button" class="btn btn3" onclick="getDate()">Get Shift</h2>
         <br>
@@ -140,6 +140,23 @@
             document.getElementById("employeeDetails").style.display = "block";
             selectedEmail = event.target.id;
             getEmployeeDetails(event.target.id);
+
+            var today = new Date();
+            var month = today.getMonth()+1;
+            var date = today.getDate();
+            var hours = today.getHours();
+            var min = today.getMinutes();
+            var sec = today.getSeconds();
+            if(month<10){month = '0'+month}
+            if(date<10){date = '0'+date}
+            if(hours<10){hours = '0'+hours}
+            if(min<10){min = '0'+min}
+            if(sec<10){sec = '0'+sec}
+
+            var dateTime = today.getFullYear()+'-'+ month +'-'+ date + "T";
+            dateTime += hours + ":" + min + ":" + sec;
+            document.getElementById("firstDate").value = dateTime;
+            document.getElementById("secondDate").value = dateTime;
         }
     });
 
