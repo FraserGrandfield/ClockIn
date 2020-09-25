@@ -177,6 +177,7 @@
     }
 
     function updateDetails() {
+        //TODO check if any of the fields are blank
         var email = document.getElementById("empEmail").value;
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {

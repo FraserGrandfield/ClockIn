@@ -1,5 +1,6 @@
 package servlets;
 
+import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
 import javax.servlet.http.HttpServlet;
@@ -32,6 +33,11 @@ public class UpdateEmployeeDetails extends HttpServlet {
                 String newFName = request.getParameter("firstName");
                 String newSName = request.getParameter("secondName");
                 String newPay = request.getParameter("pay");
+
+                if (SQLQuerySelect.isEmailInDatabase(newEmail)) {
+                    response.setStatus(480);
+                    return;
+                }
 
                 SQLQueryUpdate.updateEmployeeDetails(oldEmail, newEmail, newFName, newSName, newPay);
                 response.setStatus(HttpServletResponse.SC_OK);

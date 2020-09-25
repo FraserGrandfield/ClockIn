@@ -29,6 +29,10 @@ public class ChangeEmployeePassword extends HttpServlet {
                 response.setStatus(471);
                 return;
             }
+            if (newPassword1.length() < 6) {
+                response.setStatus(472);
+                return;
+            }
             String hashedPassword = BCrypt.hashpw(newPassword1, BCrypt.gensalt(12));
             SQLQueryUpdate.updateEmployeePassword(email, hashedPassword);
             response.setStatus(HttpServletResponse.SC_OK);
