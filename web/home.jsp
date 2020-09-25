@@ -47,6 +47,10 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="Settings.jsp" style="font-size: 15px">Settings</a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" onclick="LogOut()" href="index.jsp" style="font-size: 15px">Log Out</a>
             </li>
         </ul>

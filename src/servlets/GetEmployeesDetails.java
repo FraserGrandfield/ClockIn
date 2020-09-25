@@ -15,7 +15,13 @@ public class GetEmployeesDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //TODO check email is with the company
-        String email = request.getParameter("email");
+        String email = "";
+        String type = request.getParameter("type");
+        if (type.equals("company")) {
+            email = request.getParameter("email");
+        } else if (type.equals("employee")){
+            email = (String) request.getSession(false).getAttribute("email");
+        }
         try {
             float pay = SQLQuerySelect.getEmployeePay(email);
             String firstName = SQLQuerySelect.getEmployeeFirstName(email);

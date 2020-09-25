@@ -173,7 +173,7 @@
         };
         httpRequest.open("POST", "getemployeedetails", true);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        httpRequest.send("email=" + email);
+        httpRequest.send("email=" + email + "&type=company");
     }
 
     function updateDetails() {
@@ -190,10 +190,10 @@
         var firstName = document.getElementById("empFirstName").value;
         var secondName = document.getElementById("empSecondName").value;
         var pay = document.getElementById("empPay").value;
-        httpRequest.open("POST", "updateemployeedetailsascompany", true);
+        httpRequest.open("POST", "updateemployeedetails", true);
         httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         httpRequest.send("oldEmail=" + selectedEmail + "&email=" + email + "&firstName=" + firstName + "&secondName=" +
-            secondName + "&pay=" + pay);
+            secondName + "&pay=" + pay + "&type=company");
     }
 
     function getDate() {

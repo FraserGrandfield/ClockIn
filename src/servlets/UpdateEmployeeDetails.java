@@ -20,8 +20,14 @@ public class UpdateEmployeeDetails extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            HttpSession session = request.getSession(false);
-            String oldEmail = (String) session.getAttribute("email");
+            String oldEmail = "";
+            String type = request.getParameter("type");
+            if (type.equals("company")) {
+                oldEmail = request.getParameter("email");
+            } else if (type.equals("employee")){
+                HttpSession session = request.getSession(false);
+                oldEmail = (String) session.getAttribute("email");
+            }
                 String newEmail = request.getParameter("email");
                 String newFName = request.getParameter("firstName");
                 String newSName = request.getParameter("secondName");
