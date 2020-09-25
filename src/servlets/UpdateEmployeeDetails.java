@@ -20,11 +20,12 @@ public class UpdateEmployeeDetails extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO check pay is a float
         try {
             String oldEmail = "";
             String type = request.getParameter("type");
             if (type.equals("company")) {
-                oldEmail = request.getParameter("email");
+                oldEmail = request.getParameter("oldEmail");
             } else if (type.equals("employee")){
                 HttpSession session = request.getSession(false);
                 oldEmail = (String) session.getAttribute("email");
@@ -33,12 +34,23 @@ public class UpdateEmployeeDetails extends HttpServlet {
                 String newFName = request.getParameter("firstName");
                 String newSName = request.getParameter("secondName");
                 String newPay = request.getParameter("pay");
-
-                if (SQLQuerySelect.isEmailInDatabase(newEmail)) {
-                    response.setStatus(480);
+                if (oldEmail == "" || newEmail == "" || newFName == "" || newSName == "" || newPay == "") {
+                    System.out.println("test1");
+                    response.setStatus(475);
                     return;
                 }
-
+                if (!oldEmail.equals(newEmail)) {
+                    if (SQLQuerySelect.isEmailInDatabase(newEmail)) {
+                        System.out.println("test2");
+                        response.setStatus(480);
+                        return;
+                    }
+                }
+                if (type.equals("employee")){
+                    HttpSession session = request.getSession(false);
+                    session.setAttribute("email", newEmail);
+                }
+                System.out.println(newEmail);
                 SQLQueryUpdate.updateEmployeeDetails(oldEmail, newEmail, newFName, newSName, newPay);
                 response.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {

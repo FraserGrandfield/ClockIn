@@ -177,17 +177,23 @@
     }
 
     function updateDetails() {
-        //TODO check if any of the fields are blank
         var email = document.getElementById("empEmail").value;
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
+                document.getElementById("detailsMessage").innerText = "Details Updated!";
                 document.getElementById("detailsMessage").style.display = "block";
                 employeesList = [];
                 document.querySelectorAll(".todo-item").forEach(el => el.remove());
                 loadEmployees();
-            }
-        };
+            } else if (this.status === 475 && this.readyState === 4) {
+                document.getElementById("detailsMessage").innerText = "Error: All fields must be filled in!";
+                document.getElementById("detailsMessage").style.display = "block";
+            } else if (this.status === 480 && this.readyState === 4) {
+            document.getElementById("detailsMessage").innerText = "Error: Email already exists!";
+            document.getElementById("detailsMessage").style.display = "block";
+        }
+    };
         var firstName = document.getElementById("empFirstName").value;
         var secondName = document.getElementById("empSecondName").value;
         var pay = document.getElementById("empPay").value;

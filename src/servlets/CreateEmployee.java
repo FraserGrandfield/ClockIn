@@ -22,6 +22,7 @@ public class CreateEmployee extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO check pay is a float
         String firstName = request.getParameter("firstName");
         String secondName = request.getParameter("secondName");
         String email = request.getParameter("email");
@@ -29,7 +30,6 @@ public class CreateEmployee extends HttpServlet {
         String secondPassword = request.getParameter("secondPassword");
         String pay = request.getParameter("pay");
         String token = request.getParameter("token");
-        //TODO add check for if pay is null
         try {
             EmailValidator validator = EmailValidator.getInstance();
             if (firstName == "" || secondName == "" || email == "" || firstPassword == "" || secondPassword == "" ||

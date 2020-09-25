@@ -123,10 +123,16 @@
     }
 
     function updateDetails() {
-        //TODO check if any of the fields are blank
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
+                document.getElementById("detailsMessage").innerText = "Details Updated!";
+                document.getElementById("detailsMessage").style.display = "block";
+            }  else if (this.status === 475 && this.readyState === 4) {
+                document.getElementById("detailsMessage").innerText = "Error: All fields must be filled in!";
+                document.getElementById("detailsMessage").style.display = "block";
+            } else if (this.status === 480 && this.readyState === 4) {
+                document.getElementById("detailsMessage").innerText = "Error: Email already exists!";
                 document.getElementById("detailsMessage").style.display = "block";
             }
         };
@@ -141,16 +147,19 @@
     }
 
     function updatePassword() {
-        //TODO check if any of the fields are blank
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
+                document.getElementById("passwordMessage").innerText = "Password Updated!"
                 document.getElementById("passwordMessage").style.display = "block";
             } else if (this.status === 471 && this.readyState === 4) {
                 document.getElementById("passwordMessage").innerText = "Error: Passwords do not match!"
                 document.getElementById("passwordMessage").style.display = "block";
             } else if (this.status === 472 && this.readyState === 4) {
                 document.getElementById("passwordMessage").innerText = "Error: Password must be longer than 6 characters!"
+                document.getElementById("passwordMessage").style.display = "block";
+            } else if (this.status === 475 && this.readyState === 4) {
+                document.getElementById("passwordMessage").innerText = "Error: All fields must be filled in!";
                 document.getElementById("passwordMessage").style.display = "block";
             }
         };

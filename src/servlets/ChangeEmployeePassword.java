@@ -25,6 +25,10 @@ public class ChangeEmployeePassword extends HttpServlet {
             String email = (String) session.getAttribute("email");
             String newPassword1 = request.getParameter("newPassword1");
             String newPassword2 = request.getParameter("newPassword2");
+            if (email == "" || newPassword1 == "" || newPassword2 == "") {
+                response.setStatus(475);
+                return;
+            }
             if (!newPassword1.equals(newPassword2)) {
                 response.setStatus(471);
                 return;
